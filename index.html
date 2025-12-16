@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papertainer - Beyond the Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050507;
+            color: #f5f5f7;
+            overflow-x: hidden;
+            cursor: none; /* 커스텀 커서를 위해 기본 커서 숨김 */
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        /* Hover state for cursor */
+        body.hovering .cursor-outline {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: transparent;
+            backdrop-filter: blur(2px);
+        }
+
+        /* Text Gradients */
+        .text-gradient {
+            background: linear-gradient(135deg, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-blue {
+             background: linear-gradient(135deg, #2980b9 0%, #6dd5fa 100%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Glassmorphism */
+        .glass-nav {
+            background: rgba(5, 5, 7, 0.7);
+            backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .section-h {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Hover Zoom */
+        .hover-zoom-img {
+            transition: transform 0.7s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .group:hover .hover-zoom-img {
+            transform: scale(1.05);
+        }
+
+        /* Apple Style Button */
+        .btn-apple {
+            background: #fff;
+            color: #000;
+            border-radius: 9999px;
+            padding: 12px 32px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            letter-spacing: -0.01em;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-apple::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.2);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s ease;
+        }
+        .btn-apple:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* The Paper Plane Element */
+        .paper-plane-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100px; /* Size of the flight area container */
+            height: 100px;
+            pointer-events: none;
+            z-index: 40; /* Behind nav (50) but above content */
+            visibility: hidden; /* Hidden initially until GSAP starts */
+        }
+        .paper-plane-svg {
+            width: 40px;
+            height: auto;
+            fill: white;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+        }
+
+        .video-overlay {
+            background: linear-gradient(to bottom, rgba(5,5,7,0.3) 0%, rgba(5,5,7,1) 100%);
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor Elements -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- The Flying Paper Plane (Independent Animation Layer) -->
+    <div class="paper-plane-wrapper" id="plane-wrapper">
+        <!-- Simple Paper Plane SVG -->
+        <svg class="paper-plane-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 12l20-9-9 20-2-8-9-3z" fill="white" stroke="none"/>
+        </svg>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
+        <div class="max-w-screen-xl mx-auto px-6 h-16 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-2 text-white group hover-trigger">
+                <!-- Static Logo (Small Plane Icon) -->
+                <i class="fa-regular fa-paper-plane text-lg transform group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform duration-300"></i>
+                <span class="font-bold text-lg tracking-tight">PAPERTAINER</span>
+            </a>
+
+            <div class="hidden md:flex space-x-10 text-xs font-medium text-gray-400">
+                <a href="#" class="hover:text-white transition-colors hover-trigger">Publishing</a>
+                <a href="#" class="hover:text-white transition-colors hover-trigger">Digital</a>
+                <a href="#" class="hover:text-white transition-colors hover-trigger">Architecture</a>
+                <a href="#" class="hover:text-white transition-colors hover-trigger">Contact</a>
+            </div>
+
+            <button class="md:hidden text-white hover-trigger">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="section-h relative overflow-hidden" id="hero">
+        <div class="absolute inset-0 z-0">
+            <!-- Background Image -->
+            <div class="w-full h-full bg-[url('https://images.unsplash.com/photo-1628126235206-5260b9ea6441?q=80&w=2574&auto=format&fit=crop')] bg-cover bg-center opacity-40 scale-105 hero-bg"></div>
+            <div class="video-overlay absolute inset-0"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-6xl mx-auto mt-10">
+            <h1 class="hero-title text-6xl md:text-9xl font-black tracking-tighter mb-6 leading-tight">
+                Beyond<br>
+                <span class="text-gradient">The Page.</span>
+            </h1>
+            <p class="hero-subtitle text-lg md:text-2xl text-gray-300 font-light mb-12 opacity-0 transform translate-y-4 max-w-2xl mx-auto">
+                We craft books, then extend that tactile sensibility into digital realms, sonic landscapes, and physical spaces.<br>
+                <span class="text-gray-500 text-sm mt-4 block tracking-widest uppercase">A Creative Agency transcending Publishing</span>
+            </p>
+            <div class="hero-btns opacity-0 transform translate-y-4 flex flex-col md:flex-row gap-6 justify-center items-center">
+                <a href="#" class="btn-apple hover-trigger">View Portfolio</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors flex items-center justify-center gap-2 text-sm font-medium hover-trigger">
+                    Contact Us <i class="fa-solid fa-arrow-right -rotate-45"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-gray-500 text-xs animate-bounce">
+            Scroll to Fly
+        </div>
+    </section>
+
+    <!-- Philosophy: The Flight Path -->
+    <section class="min-h-screen bg-black flex items-center justify-center py-20 px-6 relative" id="philosophy">
+        <div class="max-w-5xl mx-auto relative z-10">
+            <div class="reveal-text text-3xl md:text-6xl font-bold leading-tight text-gray-800 transition-colors duration-500">
+                Text is our foundation.
+                <span class="text-white highlight-text opacity-10 transition-opacity duration-700">On paper, we build worlds.</span>
+                <span class="text-white highlight-text opacity-10 transition-opacity duration-700">On screens, we architect experiences.</span>
+                <span class="text-white highlight-text opacity-10 transition-opacity duration-700">In spaces, we plant stories.</span>
+                <span class="text-gradient-blue highlight-text opacity-10 transition-opacity duration-700 block mt-12">
+                    At Papertainer, every creation begins with 'Editing'.
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bento Grid: Selected Works -->
+    <section class="py-32 bg-[#050507] px-4 md:px-8 relative z-20">
+        <div class="max-w-screen-xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 px-2 border-b border-gray-800 pb-8">
+                <h2 class="text-4xl md:text-5xl font-bold text-white tracking-tight">Selected Works</h2>
+                <span class="text-gray-500 text-sm mt-4 md:mt-0 font-mono">EST. 2024 SEOUL</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[450px]">
+                
+                <!-- 1. Publishing -->
+                <div class="group md:col-span-2 relative rounded-3xl overflow-hidden cursor-none bg-gray-900 border border-gray-800 hover-trigger">
+                    <img src="https://images.unsplash.com/photo-1544256718-3bcf237f3974?q=80&w=2671&auto=format&fit=crop" alt="Publishing" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity">
+                    <div class="absolute bottom-0 left-0 p-10 w-full bg-gradient-to-t from-black via-black/80 to-transparent">
+                        <span class="text-white bg-white/10 backdrop-blur border border-white/10 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-4 inline-block">Core Identity</span>
+                        <h3 class="text-3xl font-bold text-white mb-2">Editorial & Publishing</h3>
+                        <p class="text-gray-400 text-sm max-w-md">From curation to print. We understand the physicality of paper.</p>
+                    </div>
+                </div>
+
+                <!-- 2. Digital -->
+                <div class="group relative rounded-3xl overflow-hidden cursor-none bg-gray-900 border border-gray-800 hover-trigger">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" alt="Web" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity">
+                    <div class="absolute top-0 left-0 p-8 w-full">
+                        <div class="flex justify-between items-start">
+                            <span class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-2 block">Interactive</span>
+                            <i class="fa-solid fa-arrow-up-right text-white opacity-0 group-hover:opacity-100 transition-opacity bg-white/10 p-2 rounded-full"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Web & Digital</h3>
+                    </div>
+                     <div class="absolute bottom-8 left-8 right-8">
+                         <p class="text-gray-400 text-xs">Translating brand philosophy into immersive digital environments.</p>
+                    </div>
+                </div>
+
+                <!-- 3. Album Art -->
+                <div class="group relative rounded-3xl overflow-hidden cursor-none bg-gray-900 border border-gray-800 hover-trigger">
+                     <img src="https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=2670&auto=format&fit=crop" alt="Art" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity">
+                    <div class="absolute bottom-0 left-0 p-8">
+                        <span class="text-purple-400 text-[10px] font-bold uppercase tracking-widest mb-2 block">Visual Arts</span>
+                        <h3 class="text-2xl font-bold text-white">Album Artwork</h3>
+                        <p class="text-gray-400 text-xs mt-2">Visualizing soundscapes for artists.</p>
+                    </div>
+                </div>
+
+                <!-- 4. Architecture -->
+                <div class="group md:col-span-2 relative rounded-3xl overflow-hidden cursor-none bg-gray-900 border border-gray-800 hover-trigger">
+                     <img src="https://images.unsplash.com/photo-1505567745926-ba89000c255a?q=80&w=2671&auto=format&fit=crop" alt="Space" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity">
+                    <div class="absolute bottom-0 left-0 p-10 w-full bg-gradient-to-t from-black via-black/80 to-transparent">
+                        <span class="text-yellow-500 text-[10px] font-bold uppercase tracking-widest mb-4 inline-block">Spatial Design</span>
+                        <h3 class="text-3xl font-bold text-white mb-2">Architecture & Space</h3>
+                        <p class="text-gray-400 text-sm">Extending the structural beauty of paper into physical dimensions.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#0a0a0c] py-20 border-t border-gray-800 text-xs text-gray-500 relative z-20">
+        <div class="max-w-screen-xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
+                <div class="mb-8 md:mb-0">
+                    <span class="text-white font-bold text-xl tracking-tight block mb-2">PAPERTAINER</span>
+                    <span class="text-gray-600">Seoul, Korea</span>
+                </div>
+                <div class="flex flex-wrap gap-8 text-gray-400 font-medium">
+                    <a href="#" class="hover:text-white transition-colors hover-trigger">Projects</a>
+                    <a href="#" class="hover:text-white transition-colors hover-trigger">About</a>
+                    <a href="#" class="hover:text-white transition-colors hover-trigger">Careers</a>
+                    <a href="#" class="hover:text-white transition-colors hover-trigger">Contact</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between opacity-50">
+                <p>Copyright © 2024 Papertainer Inc. All rights reserved.</p>
+                <div class="flex gap-4 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white hover-trigger">Privacy</a>
+                    <a href="#" class="hover:text-white hover-trigger">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+
+        // --- 1. Custom Cursor Logic ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const hoverTriggers = document.querySelectorAll('.hover-trigger');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            // Dot follows instantly
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Outline follows with slight delay (animation)
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Add hover effect to interactive elements
+        hoverTriggers.forEach(trigger => {
+            trigger.addEventListener('mouseenter', () => {
+                document.body.classList.add('hovering');
+            });
+            trigger.addEventListener('mouseleave', () => {
+                document.body.classList.remove('hovering');
+            });
+        });
+
+        // --- 2. Hero Animation ---
+        const tlHero = gsap.timeline();
+        tlHero.to(".hero-bg", { scale: 1, duration: 2.5, ease: "power2.out" }, 0)
+              .from(".hero-title", { y: 100, opacity: 0, duration: 1.5, ease: "power3.out" }, 0.5)
+              .to(".hero-subtitle", { y: 0, opacity: 1, duration: 1, ease: "power3.out" }, "-=0.8")
+              .to(".hero-btns", { y: 0, opacity: 1, duration: 1, ease: "power3.out" }, "-=0.8");
+
+        // --- 3. Paper Plane Flight (The Core Interactive Narrative) ---
+        // Make the plane visible
+        gsap.set("#plane-wrapper", { autoAlpha: 1 });
+
+        // Initial Entry Flight (Fly into the screen)
+        gsap.fromTo("#plane-wrapper", 
+            { x: -100, y: window.innerHeight * 0.2, rotation: 15, scale: 0.5 },
+            { 
+                x: window.innerWidth * 0.8, 
+                y: window.innerHeight * 0.3, 
+                rotation: 10, 
+                scale: 1, 
+                duration: 2.5, 
+                ease: "power2.out",
+                delay: 0.5
+            }
+        );
+
+        // Scroll Flight Path (Connecting Sections)
+        // The plane flies from Hero -> Philosophy -> Works as you scroll
+        const flightTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1.5, // Smooth lag
+                // markers: true
+            }
+        });
+
+        flightTl
+            // Fly down to Philosophy section
+            .to("#plane-wrapper", {
+                x: window.innerWidth * 0.2,
+                y: window.innerHeight * 1.2, // Move down past first viewport
+                rotation: -10,
+                scale: 1.2,
+                ease: "power1.inOut"
+            })
+            // Fly across Philosophy text
+            .to("#plane-wrapper", {
+                x: window.innerWidth * 0.8,
+                y: window.innerHeight * 1.8,
+                rotation: 45,
+                scale: 0.8,
+                ease: "power1.inOut"
+            })
+            // Dive into Works section
+            .to("#plane-wrapper", {
+                x: window.innerWidth * 0.5,
+                y: window.innerHeight * 2.5,
+                rotation: 90,
+                scale: 0.5,
+                opacity: 0, // Fade out as it enters the complex grid
+                ease: "power1.in"
+            });
+
+
+        // --- 4. Text Reveal (Philosophy) ---
+        const textElements = gsap.utils.toArray('.highlight-text');
+        textElements.forEach((text) => {
+            gsap.to(text, {
+                scrollTrigger: {
+                    trigger: text,
+                    start: "top 80%",
+                    end: "top 45%",
+                    scrub: 1
+                },
+                opacity: 1,
+                color: "#ffffff"
+            });
+        });
+
+    </script>
+</body>
+</html>
