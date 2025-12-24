@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papertainer - Album & Artwork</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            background-color: #050507;
+            color: #f5f5f7;
+            overflow-x: hidden;
+            cursor: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot { width: 8px; height: 8px; background-color: white; }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        body.hovering .cursor-outline {
+            width: 60px; height: 60px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: transparent;
+            backdrop-filter: blur(2px);
+        }
+
+        /* Glass Nav */
+        .glass-nav {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Vinyl Interaction */
+        .album-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1/1;
+            perspective: 1000px;
+        }
+        .album-cover {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: transform 0.5s ease;
+            object-fit: cover;
+        }
+        .vinyl-record {
+            position: absolute;
+            top: 2%;
+            right: 2%;
+            width: 96%;
+            height: 96%;
+            border-radius: 50%;
+            background: url('https://png.pngtree.com/png-clipart/20230414/original/pngtree-vinyl-record-png-image_9054452.png') no-repeat center center / cover;
+            z-index: 5;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* Hover Effect: Vinyl slides out and spins */
+        .album-container:hover .vinyl-record {
+            transform: translateX(40%) rotate(180deg);
+        }
+        .album-container:hover .album-cover {
+            transform: translateX(-10%);
+        }
+
+        /* Audio Wave Animation */
+        .audio-wave {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            height: 20px;
+        }
+        .bar {
+            width: 2px;
+            background: #4ade80; /* Melon Green */
+            animation: wave 1s infinite ease-in-out;
+        }
+        @keyframes wave {
+            0%, 100% { height: 4px; }
+            50% { height: 16px; }
+        }
+        
+        .btn-melon {
+            background: #00cd3c; /* Melon Brand Color */
+            color: #fff;
+            border-radius: 9999px;
+            padding: 10px 24px;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        .btn-melon:hover {
+            background: #00b335;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 205, 60, 0.4);
+        }
+        
+        /* Album Metadata Tag */
+        .meta-tag {
+            font-family: 'Inter', monospace;
+            font-size: 11px;
+            color: #888;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border-left: 1px solid #333;
+            padding-left: 10px;
+            margin-left: 10px;
+        }
+        .meta-tag:first-child {
+            border-left: none;
+            padding-left: 0;
+            margin-left: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav fixed w-full z-50 top-0 transition-all duration-300">
+        <div class="max-w-screen-xl mx-auto px-6 h-16 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-white group hover-trigger">
+                <i class="fa-regular fa-paper-plane text-lg transform group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform duration-300"></i>
+                <span class="font-bold text-lg tracking-tight">PAPERTAINER</span>
+            </a>
+
+            <div class="hidden md:flex space-x-10 text-xs font-medium text-gray-400">
+                <a href="publishing.html" class="hover:text-white transition-colors hover-trigger">Publishing</a>
+                <a href="album.html" class="text-white hover-trigger">Album & Artwork</a>
+                <a href="#" class="hover:text-white transition-colors hover-trigger">Architecture</a>
+                <a href="#" class="hover:text-white transition-colors hover-trigger">Contact</a>
+            </div>
+
+            <button class="md:hidden text-white hover-trigger">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="pt-40 pb-20 px-6 text-center">
+        <span class="text-purple-400 text-xs font-bold uppercase tracking-widest mb-4 block animate-fade-up">Visualizing Sound</span>
+        <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-6 leading-tight animate-fade-up" style="animation-delay: 0.1s;">
+            Album & <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">Artwork</span>
+        </h1>
+        <p class="text-gray-400 max-w-2xl mx-auto animate-fade-up" style="animation-delay: 0.2s;">
+            Translating the unique color of music and the artist's emotion into visual language.<br>
+            Papertainer's artwork collection: The experience of seeing sound.
+        </p>
+    </section>
+
+    <!-- Album Showcase 1: scoke -->
+    <section class="py-20 px-6 border-b border-white/5">
+        <div class="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <!-- Vinyl Interaction -->
+            <div class="flex justify-center md:justify-end animate-fade-up hover-trigger cursor-none">
+                <div class="album-container group">
+                    <!-- Album Art 1: Image Source Updated -->
+                    <img src="https://thinktainer-collab.github.io/papertainer/album_01.jpeg" alt="scoke Album Cover" class="album-cover" onerror="this.src='https://raw.githubusercontent.com/thinktainer-collab/papertainer/main/album_01.jpeg'">
+                    <div class="vinyl-record"></div>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="space-y-6 animate-fade-up" style="animation-delay: 0.2s;">
+                <div class="flex items-center gap-3">
+                    <span class="px-2 py-1 bg-white/10 rounded text-[10px] font-bold uppercase text-gray-300">Single Album #1</span>
+                    <div class="audio-wave">
+                        <div class="bar" style="animation-delay: 0s"></div>
+                        <div class="bar" style="animation-delay: 0.2s"></div>
+                        <div class="bar" style="animation-delay: 0.4s"></div>
+                        <div class="bar" style="animation-delay: 0.1s"></div>
+                    </div>
+                </div>
+                
+                <h2 class="text-4xl font-bold text-white">Debut Single</h2>
+                <h3 class="text-xl text-gray-400 font-light">scoke</h3>
+                
+                <div class="flex flex-wrap items-center pt-1 pb-3">
+                    <span class="meta-tag">2013.09.03</span>
+                    <span class="meta-tag">CJ E&M</span>
+                    <span class="meta-tag">Newskul</span>
+                </div>
+
+                <p class="text-gray-500 leading-relaxed max-w-md">
+                    The debut track of R&B singer 'scoke'. Crafted with great care over a year and a half, this self-composed song captures his honest love story following his military service, delivering a deep and sincere emotional resonance characteristic of R&B.
+                </p>
+
+                <div class="pt-4">
+                    <a href="https://www.melon.com/album/detail.htm?albumId=2199342" target="_blank" class="btn-melon hover-trigger">
+                        <i class="fa-solid fa-play"></i> Listen on Melon
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Album Showcase 2: Newskul & Kim Jin-hyang -->
+    <section class="py-20 px-6">
+        <div class="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+             <!-- Content (Order 2 on mobile, 1 on desktop) -->
+             <div class="order-2 md:order-1 space-y-6 md:text-right flex flex-col items-center md:items-end animate-fade-up">
+                <div class="flex items-center gap-3">
+                    <div class="audio-wave">
+                        <div class="bar" style="animation-delay: 0.3s"></div>
+                        <div class="bar" style="animation-delay: 0.1s"></div>
+                        <div class="bar" style="animation-delay: 0.5s"></div>
+                        <div class="bar" style="animation-delay: 0.2s"></div>
+                    </div>
+                    <span class="px-2 py-1 bg-white/10 rounded text-[10px] font-bold uppercase text-gray-300">Single Album #2</span>
+                </div>
+                
+                <h2 class="text-4xl font-bold text-white">Sokdak Sokdak</h2>
+                <h3 class="text-xl text-gray-400 font-light">Newskul, Kim Jin-hyang</h3>
+                
+                <div class="flex flex-wrap items-center justify-end pt-1 pb-3">
+                    <span class="meta-tag">2014.01.17</span>
+                    <span class="meta-tag">Mirrorball Music</span>
+                    <span class="meta-tag">Newskul E&M</span>
+                </div>
+
+                <p class="text-gray-500 leading-relaxed max-w-md text-right">
+                    Newskul's 3rd story (Only U2), a sweet collaboration with entertainer Kim Jin-hyang. Co-composed with singer-songwriter Suseong and arranged by music director Song Chang-jae, it features a cheerful melody and lovely atmosphere, topped with Newskul's signature romantic lyrics. A perfect love song for any season.
+                </p>
+
+                <div class="pt-4">
+                    <a href="https://www.melon.com/album/detail.htm?albumId=2226891" target="_blank" class="btn-melon hover-trigger">
+                        <i class="fa-solid fa-play"></i> Listen on Melon
+                    </a>
+                </div>
+            </div>
+
+            <!-- Vinyl Interaction (Order 1 on mobile, 2 on desktop) -->
+            <div class="order-1 md:order-2 flex justify-center md:justify-start animate-fade-up hover-trigger cursor-none" style="animation-delay: 0.2s;">
+                <div class="album-container group">
+                    <!-- Album Art 2: Image Source Updated -->
+                    <img src="https://thinktainer-collab.github.io/papertainer/album_02.jpeg" alt="Sokdak Sokdak Album Cover" class="album-cover" onerror="this.src='https://raw.githubusercontent.com/thinktainer-collab/papertainer/main/album_02.jpeg'">
+                    <div class="vinyl-record"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#0a0a0c] py-16 border-t border-gray-800 text-xs text-gray-500">
+        <div class="max-w-screen-xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+            <p>Copyright © 2024 Papertainer Inc. All rights reserved.</p>
+            <a href="index.html" class="hover:text-white mt-4 md:mt-0 hover-trigger">Back to Home</a>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- Custom Cursor ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const hoverTriggers = document.querySelectorAll('.hover-trigger');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
+        });
+
+        hoverTriggers.forEach(trigger => {
+            trigger.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+            trigger.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+        });
+
+        // --- Fade Up Animation ---
+        const fadeUps = document.querySelectorAll('.animate-fade-up');
+        fadeUps.forEach(el => {
+            gsap.fromTo(el, 
+                { y: 50, opacity: 0 },
+                {
+                    y: 0, opacity: 1, duration: 1, ease: "power3.out",
+                    scrollTrigger: { trigger: el, start: "top 85%" }
+                }
+            );
+        });
+    </script>
+</body>
+</html>
