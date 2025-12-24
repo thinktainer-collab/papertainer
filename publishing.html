@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papertainer - Human Body Science of Golf Swing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000;
+            color: #f5f5f7;
+            overflow-x: hidden;
+            cursor: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot { width: 8px; height: 8px; background-color: white; }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        body.hovering .cursor-outline {
+            width: 60px; height: 60px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: transparent;
+            backdrop-filter: blur(2px);
+        }
+
+        /* Nav & Glassmorphism */
+        .glass-nav {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Text Gradients */
+        .text-gradient {
+            background: linear-gradient(135deg, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-green {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Book Showcase Animations */
+        .book-hero-img {
+            filter: drop-shadow(0 20px 50px rgba(0,0,0,0.5));
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.5s ease;
+        }
+        .book-hero-img:hover {
+            transform: perspective(1000px) rotateY(0deg) scale(1.02);
+        }
+
+        /* Button */
+        .btn-apple {
+            background: #fff;
+            color: #000;
+            border-radius: 9999px;
+            padding: 12px 32px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-apple:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav fixed w-full z-50 top-0 transition-all duration-300">
+        <div class="max-w-screen-xl mx-auto px-6 h-16 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-white group hover-trigger">
+                <i class="fa-regular fa-paper-plane text-lg transform group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform duration-300"></i>
+                <span class="font-bold text-lg tracking-tight">PAPERTAINER</span>
+            </a>
+
+            <!-- Updated Navigation Links to match artwork.html -->
+            <div class="hidden md:flex space-x-10 text-xs font-medium text-gray-400">
+                <a href="publishing.html" class="text-white hover-trigger">Publishing</a>
+                <a href="artwork.html" class="hover:text-white transition-colors hover-trigger">Album & Artwork</a>
+                <a href="#" class="hover:text-white transition-colors hover-trigger">Architecture</a>
+                <a href="#" class="hover:text-white transition-colors hover-trigger">Contact</a>
+            </div>
+            
+            <button class="md:hidden text-white hover-trigger">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Showcase Section -->
+    <section class="min-h-screen flex items-center justify-center pt-24 pb-20 px-6 relative overflow-hidden bg-[#050507]">
+        <!-- Background Ambient Light (Greenish for Golf theme) -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-green-900/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-screen-xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center relative z-10">
+            
+            <!-- Left: Text Content -->
+            <div class="order-2 md:order-1 space-y-8">
+                <div class="opacity-0 translate-y-10 animate-fade-up" style="animation-delay: 0.2s;">
+                    <span class="text-green-400 text-xs font-bold uppercase tracking-widest mb-4 block">Biomechanics & Physics</span>
+                    <h1 class="text-4xl md:text-6xl font-black tracking-tighter leading-tight text-white mb-6">
+                        Human Body Science<br>
+                        <span class="text-gradient">of Golf Swing</span>
+                    </h1>
+                    <p class="text-lg text-gray-400 font-light leading-relaxed max-w-lg">
+                        Unlocking the secrets of the perfect swing through biomechanics. 
+                        Co-authored by a sports scientist and a medical doctor, this book analyzes the golf swing through the lens of physics and human anatomy, offering a scientific approach to efficient movement.
+                    </p>
+                </div>
+
+                <!-- Specs -->
+                <div class="grid grid-cols-2 gap-6 py-8 border-t border-white/10 opacity-0 translate-y-10 animate-fade-up" style="animation-delay: 0.4s;">
+                    <div>
+                        <span class="text-gray-500 text-xs uppercase block mb-1">Authors</span>
+                        <span class="text-white font-medium text-sm">Song-Yi Choi, Jun-Hee Seol</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-500 text-xs uppercase block mb-1">Publisher</span>
+                        <span class="text-white font-medium text-sm">Good World</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-500 text-xs uppercase block mb-1">Format</span>
+                        <span class="text-white font-medium text-sm">Kindle Edition (eBook)</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-500 text-xs uppercase block mb-1">Language</span>
+                        <span class="text-white font-medium text-sm">English / Korean</span>
+                    </div>
+                </div>
+
+                <div class="opacity-0 translate-y-10 animate-fade-up flex gap-4" style="animation-delay: 0.6s;">
+                    <a href="https://www.amazon.com/Human-Body-Science-Golf-Swing-ebook/dp/B0F335K6XK" target="_blank" class="btn-apple hover-trigger">
+                        <i class="fa-brands fa-amazon"></i> View on Amazon
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right: Hero Image (The Book) -->
+            <div class="order-1 md:order-2 flex justify-center perspective-container opacity-0 translate-y-10 animate-fade-up" style="animation-delay: 0.4s;">
+                <div class="relative w-full max-w-md aspect-[3/4] group">
+                    <!-- Updated Book Cover Image -->
+                    <img src="https://www.papertainer.com/ebook_01.png" 
+                         alt="Human Body Science of Golf Swing Cover" 
+                         class="book-hero-img w-full h-full shadow-2xl rounded-lg object-cover hover-trigger cursor-none border border-white/10"
+                         onerror="this.src='https://images.unsplash.com/photo-1535131749006-b7f58c99034b?q=80&w=1600&auto=format&fit=crop'">
+                    
+                    <!-- Digital Reader Hint -->
+                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur px-3 py-1 rounded-full text-[10px] text-gray-300 border border-white/10">
+                        Available on Kindle
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detail / Gallery Section -->
+    <section class="py-32 bg-white text-black px-6">
+        <div class="max-w-4xl mx-auto text-center mb-20">
+            <h2 class="text-4xl font-bold mb-6 tracking-tight">Science Meets Sport.</h2>
+            <p class="text-gray-500">
+                Understanding the physics behind the swing is the key to improvement.<br>
+                We visualize the invisible mechanics of the human body for the perfect shot.
+            </p>
+        </div>
+
+        <div class="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="overflow-hidden rounded-2xl group relative h-[400px]">
+                <!-- Updated Kinematic Sequence Image -->
+                <img src="https://www.papertainer.com/ebook_01s.png" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Golf Swing Analysis" onerror="this.src='https://images.unsplash.com/photo-1593111774240-d529f12db4bb?q=80&w=1600&auto=format&fit=crop'">
+                <div class="absolute bottom-0 left-0 p-6 bg-gradient-to-t from-black/60 to-transparent w-full">
+                    <span class="text-white font-medium">Kinematic Sequence</span>
+                </div>
+            </div>
+            <div class="overflow-hidden rounded-2xl group relative h-[400px]">
+                <!-- Updated Muscle Activation Image -->
+                <img src="https://www.papertainer.com/ebook_01a.png" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Anatomy" onerror="this.src='https://images.unsplash.com/photo-1576670159805-381a9634b595?q=80&w=1600&auto=format&fit=crop'">
+                <div class="absolute bottom-0 left-0 p-6 bg-gradient-to-t from-black/60 to-transparent w-full">
+                    <span class="text-white font-medium">Muscle Activation</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-16 border-t border-gray-800 text-xs text-gray-500">
+        <div class="max-w-screen-xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+            <p>Copyright © 2024 Papertainer Inc. All rights reserved.</p>
+            <a href="index.html" class="hover:text-white mt-4 md:mt-0 hover-trigger">Back to Home</a>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- Custom Cursor ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const hoverTriggers = document.querySelectorAll('.hover-trigger');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
+        });
+
+        hoverTriggers.forEach(trigger => {
+            trigger.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+            trigger.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+        });
+
+        // --- Fade Up Animation Logic ---
+        const fadeUps = document.querySelectorAll('.animate-fade-up');
+        fadeUps.forEach(el => {
+            gsap.to(el, {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                ease: "power3.out",
+                delay: parseFloat(el.style.animationDelay) || 0
+            });
+        });
+    </script>
+</body>
+</html>
