@@ -119,24 +119,6 @@
             transform-origin: left;
         }
 
-        /* The Paper Plane Element */
-        .paper-plane-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100px; /* Size of the flight area container */
-            height: 100px;
-            pointer-events: none;
-            z-index: 40; /* Behind nav (50) but above content */
-            visibility: hidden; /* Hidden initially until GSAP starts */
-        }
-        .paper-plane-svg {
-            width: 40px;
-            height: auto;
-            fill: white;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
-        }
-
         .video-overlay {
             background: linear-gradient(to bottom, rgba(5,5,7,0.3) 0%, rgba(5,5,7,1) 100%);
         }
@@ -147,31 +129,38 @@
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
-    <!-- The Flying Paper Plane (Independent Animation Layer) -->
-    <div class="paper-plane-wrapper" id="plane-wrapper">
-        <!-- Simple Paper Plane SVG -->
-        <svg class="paper-plane-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2 12l20-9-9 20-2-8-9-3z" fill="white" stroke="none"/>
-        </svg>
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay" class="fixed inset-0 z-[60] bg-black bg-opacity-95 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
+        <button id="mobile-menu-close" class="absolute top-6 right-6 text-white text-2xl hover-trigger p-4">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="flex flex-col space-y-8 text-center text-2xl font-bold text-gray-400">
+            <a href="publishing.html" class="hover:text-white transition-colors hover-trigger mobile-link">Publishing</a>
+            <!-- Updated Link: artwork.html -->
+            <a href="artwork.html" class="hover:text-white transition-colors hover-trigger mobile-link">Album & Artwork</a>
+            <a href="#" class="hover:text-white transition-colors hover-trigger mobile-link">Architecture</a>
+            <a href="#" class="hover:text-white transition-colors hover-trigger mobile-link">Contact</a>
+        </div>
     </div>
 
     <!-- Navigation -->
     <nav class="glass-nav fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
         <div class="max-w-screen-xl mx-auto px-6 h-16 flex justify-between items-center">
-            <a href="#" class="flex items-center gap-2 text-white group hover-trigger">
+            <a href="index.html" class="flex items-center gap-2 text-white group hover-trigger">
                 <!-- Static Logo (Small Plane Icon) -->
                 <i class="fa-regular fa-paper-plane text-lg transform group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform duration-300"></i>
                 <span class="font-bold text-lg tracking-tight">PAPERTAINER</span>
             </a>
 
+            <!-- Updated Nav Links to match artwork.html -->
             <div class="hidden md:flex space-x-10 text-xs font-medium text-gray-400">
-                <a href="#" class="hover:text-white transition-colors hover-trigger">Publishing</a>
-                <a href="#" class="hover:text-white transition-colors hover-trigger">Digital</a>
+                <a href="publishing.html" class="hover:text-white transition-colors hover-trigger">Publishing</a>
+                <a href="artwork.html" class="hover:text-white transition-colors hover-trigger">Album & Artwork</a>
                 <a href="#" class="hover:text-white transition-colors hover-trigger">Architecture</a>
                 <a href="#" class="hover:text-white transition-colors hover-trigger">Contact</a>
             </div>
 
-            <button class="md:hidden text-white hover-trigger">
+            <button id="mobile-menu-btn" class="md:hidden text-white hover-trigger p-2">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
         </div>
@@ -195,7 +184,7 @@
                 <span class="text-gray-500 text-sm mt-4 block tracking-widest uppercase">A Creative Agency transcending Publishing</span>
             </p>
             <div class="hero-btns opacity-0 transform translate-y-4 flex flex-col md:flex-row gap-6 justify-center items-center">
-                <a href="#" class="btn-apple hover-trigger">View Portfolio</a>
+                <a href="publishing.html" class="btn-apple hover-trigger">View Portfolio</a>
                 <a href="#" class="text-gray-400 hover:text-white transition-colors flex items-center justify-center gap-2 text-sm font-medium hover-trigger">
                     Contact Us <i class="fa-solid fa-arrow-right -rotate-45"></i>
                 </a>
@@ -204,7 +193,7 @@
         
         <!-- Scroll Indicator -->
         <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-gray-500 text-xs animate-bounce">
-            Scroll to Fly
+            Scroll to Explore
         </div>
     </section>
 
@@ -234,37 +223,37 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[450px]">
                 
                 <!-- 1. Publishing -->
-                <div class="group md:col-span-2 relative rounded-3xl overflow-hidden cursor-none bg-gray-900 border border-gray-800 hover-trigger">
+                <a href="publishing.html" class="group md:col-span-2 relative rounded-3xl overflow-hidden cursor-none bg-gray-900 border border-gray-800 hover-trigger">
                     <img src="https://images.unsplash.com/photo-1544256718-3bcf237f3974?q=80&w=2671&auto=format&fit=crop" alt="Publishing" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity">
                     <div class="absolute bottom-0 left-0 p-10 w-full bg-gradient-to-t from-black via-black/80 to-transparent">
                         <span class="text-white bg-white/10 backdrop-blur border border-white/10 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-4 inline-block">Core Identity</span>
                         <h3 class="text-3xl font-bold text-white mb-2">Editorial & Publishing</h3>
                         <p class="text-gray-400 text-sm max-w-md">From curation to print. We understand the physicality of paper.</p>
                     </div>
-                </div>
+                </a>
 
-                <!-- 2. Digital -->
-                <div class="group relative rounded-3xl overflow-hidden cursor-none bg-gray-900 border border-gray-800 hover-trigger">
-                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" alt="Web" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity">
+                <!-- 2. Album & Artwork (Updated Link: artwork.html) -->
+                <a href="artwork.html" class="group relative rounded-3xl overflow-hidden cursor-none bg-gray-900 border border-gray-800 hover-trigger">
+                    <img src="https://thinktainer-collab.github.io/papertainer/album_01.jpeg" alt="Album Art" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" onerror="this.src='https://raw.githubusercontent.com/thinktainer-collab/papertainer/main/album_01.jpeg'">
                     <div class="absolute top-0 left-0 p-8 w-full">
                         <div class="flex justify-between items-start">
-                            <span class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-2 block">Interactive</span>
+                            <span class="text-purple-400 text-[10px] font-bold uppercase tracking-widest mb-2 block">Visual Arts</span>
                             <i class="fa-solid fa-arrow-up-right text-white opacity-0 group-hover:opacity-100 transition-opacity bg-white/10 p-2 rounded-full"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-white">Web & Digital</h3>
+                        <h3 class="text-2xl font-bold text-white">Album & Artwork</h3>
                     </div>
                      <div class="absolute bottom-8 left-8 right-8">
-                         <p class="text-gray-400 text-xs">Translating brand philosophy into immersive digital environments.</p>
+                         <p class="text-gray-400 text-xs">Visualizing soundscapes for artists.</p>
                     </div>
-                </div>
+                </a>
 
-                <!-- 3. Album Art -->
+                <!-- 3. Web & Digital -->
                 <div class="group relative rounded-3xl overflow-hidden cursor-none bg-gray-900 border border-gray-800 hover-trigger">
-                     <img src="https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=2670&auto=format&fit=crop" alt="Art" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity">
+                     <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" alt="Web" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity">
                     <div class="absolute bottom-0 left-0 p-8">
-                        <span class="text-purple-400 text-[10px] font-bold uppercase tracking-widest mb-2 block">Visual Arts</span>
-                        <h3 class="text-2xl font-bold text-white">Album Artwork</h3>
-                        <p class="text-gray-400 text-xs mt-2">Visualizing soundscapes for artists.</p>
+                        <span class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-2 block">Interactive</span>
+                        <h3 class="text-2xl font-bold text-white">Web & Digital</h3>
+                        <p class="text-gray-400 text-xs mt-2">Immersive digital environments.</p>
                     </div>
                 </div>
 
@@ -340,70 +329,40 @@
             });
         });
 
-        // --- 2. Hero Animation ---
+        // --- 2. Mobile Menu Logic ---
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu-overlay');
+        const mobileClose = document.getElementById('mobile-menu-close');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            const isOpen = mobileMenu.classList.contains('pointer-events-auto');
+            if (isOpen) {
+                // Close
+                mobileMenu.classList.remove('opacity-100', 'pointer-events-auto');
+                mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+                document.body.style.overflow = 'auto'; // Restore scroll
+            } else {
+                // Open
+                mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
+                mobileMenu.classList.add('opacity-100', 'pointer-events-auto');
+                document.body.style.overflow = 'hidden'; // Prevent scroll
+            }
+        }
+
+        if(mobileBtn) mobileBtn.addEventListener('click', toggleMenu);
+        if(mobileClose) mobileClose.addEventListener('click', toggleMenu);
+        
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // --- 3. Hero Animation ---
         const tlHero = gsap.timeline();
         tlHero.to(".hero-bg", { scale: 1, duration: 2.5, ease: "power2.out" }, 0)
               .from(".hero-title", { y: 100, opacity: 0, duration: 1.5, ease: "power3.out" }, 0.5)
               .to(".hero-subtitle", { y: 0, opacity: 1, duration: 1, ease: "power3.out" }, "-=0.8")
               .to(".hero-btns", { y: 0, opacity: 1, duration: 1, ease: "power3.out" }, "-=0.8");
-
-        // --- 3. Paper Plane Flight (The Core Interactive Narrative) ---
-        // Make the plane visible
-        gsap.set("#plane-wrapper", { autoAlpha: 1 });
-
-        // Initial Entry Flight (Fly into the screen)
-        gsap.fromTo("#plane-wrapper", 
-            { x: -100, y: window.innerHeight * 0.2, rotation: 15, scale: 0.5 },
-            { 
-                x: window.innerWidth * 0.8, 
-                y: window.innerHeight * 0.3, 
-                rotation: 10, 
-                scale: 1, 
-                duration: 2.5, 
-                ease: "power2.out",
-                delay: 0.5
-            }
-        );
-
-        // Scroll Flight Path (Connecting Sections)
-        // The plane flies from Hero -> Philosophy -> Works as you scroll
-        const flightTl = gsap.timeline({
-            scrollTrigger: {
-                trigger: "body",
-                start: "top top",
-                end: "bottom bottom",
-                scrub: 1.5, // Smooth lag
-                // markers: true
-            }
-        });
-
-        flightTl
-            // Fly down to Philosophy section
-            .to("#plane-wrapper", {
-                x: window.innerWidth * 0.2,
-                y: window.innerHeight * 1.2, // Move down past first viewport
-                rotation: -10,
-                scale: 1.2,
-                ease: "power1.inOut"
-            })
-            // Fly across Philosophy text
-            .to("#plane-wrapper", {
-                x: window.innerWidth * 0.8,
-                y: window.innerHeight * 1.8,
-                rotation: 45,
-                scale: 0.8,
-                ease: "power1.inOut"
-            })
-            // Dive into Works section
-            .to("#plane-wrapper", {
-                x: window.innerWidth * 0.5,
-                y: window.innerHeight * 2.5,
-                rotation: 90,
-                scale: 0.5,
-                opacity: 0, // Fade out as it enters the complex grid
-                ease: "power1.in"
-            });
-
 
         // --- 4. Text Reveal (Philosophy) ---
         const textElements = gsap.utils.toArray('.highlight-text');
