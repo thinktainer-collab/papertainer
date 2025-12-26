@@ -79,6 +79,15 @@
             transition: opacity 0.3s;
             pointer-events: none;
         }
+
+        /* Map Container */
+        .map-container iframe {
+            filter: grayscale(100%) invert(90%); /* 다크모드 맵 스타일 */
+            transition: filter 0.3s;
+        }
+        .map-container:hover iframe {
+            filter: grayscale(0%) invert(0%); /* 호버 시 컬러 */
+        }
     </style>
 </head>
 <body>
@@ -118,16 +127,18 @@
     </nav>
 
     <!-- Main Content -->
-    <section class="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden" id="contact-section">
-        <!-- Background Elements with Parallax -->
-        <div class="absolute inset-0 z-0">
-            <!-- Background Image: Abstract Architecture/Structure -->
-            <div class="w-full h-full bg-[url('https://images.unsplash.com/photo-1485627658391-1365e4e0db9f?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-center opacity-40 scale-110 transition-transform duration-100 ease-out" id="contact-bg"></div>
+    <section class="min-h-screen flex flex-col justify-center items-center px-6 pt-20 relative overflow-hidden" id="contact-section">
+        <!-- Background Elements with Parallax (Updated) -->
+        <div class="absolute inset-0 z-0 bg-[#111]"> <!-- Fallback color -->
+            <!-- Updated Image URL and simpler inline style -->
+            <div class="w-full h-full bg-cover bg-center opacity-40 scale-110 transition-transform duration-100 ease-out" 
+                 style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop');" 
+                 id="contact-bg"></div>
             <!-- Dark Overlay for Readability -->
             <div class="absolute inset-0 bg-black/60"></div>
         </div>
 
-        <div class="relative z-10 text-center max-w-4xl mx-auto">
+        <div class="relative z-10 text-center max-w-4xl mx-auto w-full">
             <span class="text-gray-400 text-xs font-bold uppercase tracking-[0.2em] mb-6 block animate-fade-up">Get in Touch</span>
             
             <h1 class="text-5xl md:text-7xl font-black tracking-tighter leading-tight mb-12 animate-fade-up" style="animation-delay: 0.1s;">
@@ -149,15 +160,38 @@
                 </div>
             </div>
 
-            <div class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-12 text-left max-w-2xl mx-auto border-t border-white/10 pt-12 animate-fade-up" style="animation-delay: 0.4s;">
+            <div class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-12 text-left max-w-3xl mx-auto border-t border-white/10 pt-12 animate-fade-up" style="animation-delay: 0.4s;">
                 <div>
-                    <h3 class="text-white font-bold mb-2">Location</h3>
-                    <p class="text-gray-400 text-sm">Gangnam-gu, Seoul<br>Republic of Korea</p>
+                    <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-location-dot text-gray-500"></i> Location
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        06234, 3rd Floor, Seonggok Building,<br>
+                        128 Teheran-ro, Gangnam-gu,<br>
+                        Seoul, Republic of Korea
+                    </p>
                 </div>
                 <div>
-                    <h3 class="text-white font-bold mb-2">Business Inquiries</h3>
-                    <p class="text-gray-400 text-sm">For project requests and partnership opportunities, please email us directly.</p>
+                    <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-envelope text-gray-500"></i> Business Inquiries
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        For project requests and partnership opportunities, please email us directly.
+                    </p>
                 </div>
+            </div>
+
+            <!-- Google Map Section (Updated Address) -->
+            <div class="mt-12 w-full max-w-3xl mx-auto h-80 rounded-2xl overflow-hidden border border-white/10 shadow-2xl animate-fade-up map-container relative z-10" style="animation-delay: 0.5s;">
+                <iframe 
+                    src="https://www.google.com/maps?q=128+Teheran-ro,+Gangnam-gu,+Seoul&output=embed" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
         </div>
     </section>
