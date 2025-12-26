@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papertainer - Contact</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Free Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            background-color: #050507;
+            color: #f5f5f7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+
+        /* Glass Nav */
+        .glass-nav {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Text Gradient */
+        .text-gradient {
+            background: linear-gradient(135deg, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Email Button Interaction */
+        .email-link-container {
+            position: relative;
+            display: inline-block;
+        }
+        .email-link {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            position: relative;
+            transition: color 0.3s;
+            letter-spacing: -0.02em;
+        }
+        .email-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background-color: #fff;
+            transition: width 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .email-link:hover::after {
+            width: 100%;
+        }
+        
+        .copy-feedback {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(4px);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #aaa;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay" class="fixed inset-0 z-[60] bg-black bg-opacity-95 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
+        <button id="mobile-menu-close" class="absolute top-6 right-6 text-white text-2xl p-4">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="flex flex-col space-y-8 text-center text-2xl font-bold text-gray-400">
+            <a href="publishing.html" class="hover:text-white transition-colors mobile-link">Publishing</a>
+            <a href="artwork.html" class="hover:text-white transition-colors mobile-link">Album & Artwork</a>
+            <a href="architecture.html" class="hover:text-white transition-colors mobile-link">Architecture</a>
+            <a href="contact.html" class="text-white mobile-link">Contact</a>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav fixed w-full z-50 top-0 transition-all duration-300">
+        <div class="max-w-screen-xl mx-auto px-6 h-16 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-white group">
+                <i class="fa-regular fa-paper-plane text-lg transform group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform duration-300"></i>
+                <span class="font-bold text-lg tracking-tight">PAPERTAINER</span>
+            </a>
+
+            <div class="hidden md:flex space-x-10 text-xs font-medium text-gray-400">
+                <a href="publishing.html" class="hover:text-white transition-colors">Publishing</a>
+                <a href="artwork.html" class="hover:text-white transition-colors">Album & Artwork</a>
+                <a href="architecture.html" class="hover:text-white transition-colors">Architecture</a>
+                <a href="contact.html" class="text-white">Contact</a>
+            </div>
+
+            <button id="mobile-menu-btn" class="md:hidden text-white p-2">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden" id="contact-section">
+        <!-- Background Elements with Parallax -->
+        <div class="absolute inset-0 z-0">
+            <!-- Background Image: Abstract Architecture/Structure -->
+            <div class="w-full h-full bg-[url('https://images.unsplash.com/photo-1485627658391-1365e4e0db9f?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-center opacity-40 scale-110 transition-transform duration-100 ease-out" id="contact-bg"></div>
+            <!-- Dark Overlay for Readability -->
+            <div class="absolute inset-0 bg-black/60"></div>
+        </div>
+
+        <div class="relative z-10 text-center max-w-4xl mx-auto">
+            <span class="text-gray-400 text-xs font-bold uppercase tracking-[0.2em] mb-6 block animate-fade-up">Get in Touch</span>
+            
+            <h1 class="text-5xl md:text-7xl font-black tracking-tighter leading-tight mb-12 animate-fade-up" style="animation-delay: 0.1s;">
+                Let's Create<br>
+                <span class="text-gradient">Something Extraordinary.</span>
+            </h1>
+
+            <p class="text-gray-300 text-lg md:text-xl font-light mb-16 max-w-2xl mx-auto animate-fade-up" style="animation-delay: 0.2s;">
+                We are always looking for new challenges and collaborations.<br>
+                Whether you have a question or just want to say hi, we'll try our best to get back to you!
+            </p>
+
+            <div class="animate-fade-up" style="animation-delay: 0.3s;">
+                <div class="email-link-container">
+                    <div class="copy-feedback">Click to Send Mail</div>
+                    <a href="mailto:hello@papertainer.com" class="email-link hover:text-gray-300">
+                        hello@papertainer.com
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-12 text-left max-w-2xl mx-auto border-t border-white/10 pt-12 animate-fade-up" style="animation-delay: 0.4s;">
+                <div>
+                    <h3 class="text-white font-bold mb-2">Location</h3>
+                    <p class="text-gray-400 text-sm">Gangnam-gu, Seoul<br>Republic of Korea</p>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-2">Business Inquiries</h3>
+                    <p class="text-gray-400 text-sm">For project requests and partnership opportunities, please email us directly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-16 border-t border-gray-800 text-xs text-gray-500 relative z-10">
+        <div class="max-w-screen-xl mx-auto px-6 text-center">
+            <p>Copyright © 2025 PAPERTAINER.COM All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Mobile Menu Logic
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu-overlay');
+        const mobileClose = document.getElementById('mobile-menu-close');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            const isOpen = mobileMenu.classList.contains('pointer-events-auto');
+            if (isOpen) {
+                mobileMenu.classList.remove('opacity-100', 'pointer-events-auto');
+                mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+                document.body.style.overflow = 'auto';
+            } else {
+                mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
+                mobileMenu.classList.add('opacity-100', 'pointer-events-auto');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        if(mobileBtn) mobileBtn.addEventListener('click', toggleMenu);
+        if(mobileClose) mobileClose.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
+
+        // Fade Up Animation
+        const fadeUps = document.querySelectorAll('.animate-fade-up');
+        fadeUps.forEach(el => {
+            gsap.fromTo(el, 
+                { y: 50, opacity: 0 },
+                {
+                    y: 0, opacity: 1, duration: 1, ease: "power3.out",
+                    delay: parseFloat(el.style.animationDelay) || 0
+                }
+            );
+        });
+
+        // Background Parallax Interaction
+        const contactSection = document.getElementById('contact-section');
+        const contactBg = document.getElementById('contact-bg');
+
+        if (contactSection && contactBg) {
+            contactSection.addEventListener('mousemove', (e) => {
+                // Calculate mouse position relative to the center of the screen
+                const xPos = (e.clientX / window.innerWidth - 0.5) * 40; // max 20px movement
+                const yPos = (e.clientY / window.innerHeight - 0.5) * 40;
+
+                // Animate background position opposite to mouse
+                gsap.to(contactBg, {
+                    x: -xPos,
+                    y: -yPos,
+                    duration: 1.5,
+                    ease: "power2.out"
+                });
+            });
+        }
+    </script>
+</body>
+</html>
