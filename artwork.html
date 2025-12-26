@@ -9,6 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* Free Google Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
         body {
@@ -16,32 +17,10 @@
             background-color: #050507;
             color: #f5f5f7;
             overflow-x: hidden;
-            cursor: none;
             -webkit-font-smoothing: antialiased;
         }
 
         ::-webkit-scrollbar { width: 0px; background: transparent; }
-
-        /* Custom Cursor */
-        .cursor-dot, .cursor-outline {
-            position: fixed; top: 0; left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 9999;
-            pointer-events: none;
-        }
-        .cursor-dot { width: 8px; height: 8px; background-color: white; }
-        .cursor-outline {
-            width: 40px; height: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
-        }
-        body.hovering .cursor-outline {
-            width: 60px; height: 60px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: transparent;
-            backdrop-filter: blur(2px);
-        }
 
         /* Glass Nav */
         .glass-nav {
@@ -141,26 +120,36 @@
     </style>
 </head>
 <body>
-    <!-- Cursor -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-outline"></div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay" class="fixed inset-0 z-[60] bg-black bg-opacity-95 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
+        <button id="mobile-menu-close" class="absolute top-6 right-6 text-white text-2xl p-4">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="flex flex-col space-y-8 text-center text-2xl font-bold text-gray-400">
+            <a href="publishing.html" class="hover:text-white transition-colors mobile-link">Publishing</a>
+            <a href="artwork.html" class="text-white mobile-link">Album & Artwork</a>
+            <a href="architecture.html" class="hover:text-white transition-colors mobile-link">Architecture</a>
+            <a href="contact.html" class="hover:text-white transition-colors mobile-link">Contact</a>
+        </div>
+    </div>
 
     <!-- Navigation -->
     <nav class="glass-nav fixed w-full z-50 top-0 transition-all duration-300">
         <div class="max-w-screen-xl mx-auto px-6 h-16 flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-2 text-white group hover-trigger">
+            <a href="index.html" class="flex items-center gap-2 text-white group">
                 <i class="fa-regular fa-paper-plane text-lg transform group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform duration-300"></i>
                 <span class="font-bold text-lg tracking-tight">PAPERTAINER</span>
             </a>
 
             <div class="hidden md:flex space-x-10 text-xs font-medium text-gray-400">
-                <a href="publishing.html" class="hover:text-white transition-colors hover-trigger">Publishing</a>
-                <a href="album.html" class="text-white hover-trigger">Album & Artwork</a>
-                <a href="#" class="hover:text-white transition-colors hover-trigger">Architecture</a>
-                <a href="#" class="hover:text-white transition-colors hover-trigger">Contact</a>
+                <a href="publishing.html" class="hover:text-white transition-colors">Publishing</a>
+                <a href="artwork.html" class="text-white">Album & Artwork</a>
+                <a href="architecture.html" class="hover:text-white transition-colors">Architecture</a>
+                <a href="contact.html" class="hover:text-white transition-colors">Contact</a>
             </div>
 
-            <button class="md:hidden text-white hover-trigger">
+            <button id="mobile-menu-btn" class="md:hidden text-white p-2">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
         </div>
@@ -182,9 +171,9 @@
     <section class="py-20 px-6 border-b border-white/5">
         <div class="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <!-- Vinyl Interaction -->
-            <div class="flex justify-center md:justify-end animate-fade-up hover-trigger cursor-none">
+            <div class="flex justify-center md:justify-end animate-fade-up cursor-pointer">
                 <div class="album-container group">
-                    <!-- Album Art 1: Image Source Updated -->
+                    <!-- Album Art 1 -->
                     <img src="https://thinktainer-collab.github.io/papertainer/album_01.jpeg" alt="scoke Album Cover" class="album-cover" onerror="this.src='https://raw.githubusercontent.com/thinktainer-collab/papertainer/main/album_01.jpeg'">
                     <div class="vinyl-record"></div>
                 </div>
@@ -216,7 +205,7 @@
                 </p>
 
                 <div class="pt-4">
-                    <a href="https://www.melon.com/album/detail.htm?albumId=2199342" target="_blank" class="btn-melon hover-trigger">
+                    <a href="https://www.melon.com/album/detail.htm?albumId=2199342" target="_blank" class="btn-melon">
                         <i class="fa-solid fa-play"></i> Listen on Melon
                     </a>
                 </div>
@@ -253,16 +242,16 @@
                 </p>
 
                 <div class="pt-4">
-                    <a href="https://www.melon.com/album/detail.htm?albumId=2226891" target="_blank" class="btn-melon hover-trigger">
+                    <a href="https://www.melon.com/album/detail.htm?albumId=2226891" target="_blank" class="btn-melon">
                         <i class="fa-solid fa-play"></i> Listen on Melon
                     </a>
                 </div>
             </div>
 
             <!-- Vinyl Interaction (Order 1 on mobile, 2 on desktop) -->
-            <div class="order-1 md:order-2 flex justify-center md:justify-start animate-fade-up hover-trigger cursor-none" style="animation-delay: 0.2s;">
+            <div class="order-1 md:order-2 flex justify-center md:justify-start animate-fade-up cursor-pointer" style="animation-delay: 0.2s;">
                 <div class="album-container group">
-                    <!-- Album Art 2: Image Source Updated -->
+                    <!-- Album Art 2 -->
                     <img src="https://thinktainer-collab.github.io/papertainer/album_02.jpeg" alt="Sokdak Sokdak Album Cover" class="album-cover" onerror="this.src='https://raw.githubusercontent.com/thinktainer-collab/papertainer/main/album_02.jpeg'">
                     <div class="vinyl-record"></div>
                 </div>
@@ -271,35 +260,39 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-[#0a0a0c] py-16 border-t border-gray-800 text-xs text-gray-500">
-        <div class="max-w-screen-xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-            <p>Copyright © 2024 Papertainer Inc. All rights reserved.</p>
-            <a href="index.html" class="hover:text-white mt-4 md:mt-0 hover-trigger">Back to Home</a>
+    <footer class="bg-black py-16 border-t border-gray-800 text-xs text-gray-500">
+        <div class="max-w-screen-xl mx-auto px-6 text-center">
+            <p>Copyright © 2025 PAPERTAINER.COM All rights reserved.</p>
         </div>
     </footer>
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // --- Custom Cursor ---
-        const cursorDot = document.querySelector('.cursor-dot');
-        const cursorOutline = document.querySelector('.cursor-outline');
-        const hoverTriggers = document.querySelectorAll('.hover-trigger');
+        // Mobile Menu
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu-overlay');
+        const mobileClose = document.getElementById('mobile-menu-close');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
 
-        window.addEventListener('mousemove', (e) => {
-            const posX = e.clientX;
-            const posY = e.clientY;
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
-            cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
-        });
+        function toggleMenu() {
+            const isOpen = mobileMenu.classList.contains('pointer-events-auto');
+            if (isOpen) {
+                mobileMenu.classList.remove('opacity-100', 'pointer-events-auto');
+                mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+                document.body.style.overflow = 'auto';
+            } else {
+                mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
+                mobileMenu.classList.add('opacity-100', 'pointer-events-auto');
+                document.body.style.overflow = 'hidden';
+            }
+        }
 
-        hoverTriggers.forEach(trigger => {
-            trigger.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-            trigger.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
-        });
+        if(mobileBtn) mobileBtn.addEventListener('click', toggleMenu);
+        if(mobileClose) mobileClose.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
 
-        // --- Fade Up Animation ---
+        // Fade Up Animation
         const fadeUps = document.querySelectorAll('.animate-fade-up');
         fadeUps.forEach(el => {
             gsap.fromTo(el, 
