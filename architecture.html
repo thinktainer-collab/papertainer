@@ -16,32 +16,11 @@
             background-color: #050507;
             color: #f5f5f7;
             overflow-x: hidden;
-            cursor: none;
+            /* cursor: none; 제거 - 기본 커서 사용 */
             -webkit-font-smoothing: antialiased;
         }
 
         ::-webkit-scrollbar { width: 0px; background: transparent; }
-
-        /* Custom Cursor */
-        .cursor-dot, .cursor-outline {
-            position: fixed; top: 0; left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 9999;
-            pointer-events: none;
-        }
-        .cursor-dot { width: 8px; height: 8px; background-color: white; }
-        .cursor-outline {
-            width: 40px; height: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
-        }
-        body.hovering .cursor-outline {
-            width: 60px; height: 60px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: transparent;
-            backdrop-filter: blur(2px);
-        }
 
         /* Nav */
         .glass-nav {
@@ -72,39 +51,36 @@
     </style>
 </head>
 <body>
-    <!-- Cursor -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-outline"></div>
 
     <!-- Mobile Menu Overlay -->
     <div id="mobile-menu-overlay" class="fixed inset-0 z-[60] bg-black bg-opacity-95 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
-        <button id="mobile-menu-close" class="absolute top-6 right-6 text-white text-2xl hover-trigger p-4">
+        <button id="mobile-menu-close" class="absolute top-6 right-6 text-white text-2xl p-4">
             <i class="fa-solid fa-xmark"></i>
         </button>
         <div class="flex flex-col space-y-8 text-center text-2xl font-bold text-gray-400">
-            <a href="publishing.html" class="hover:text-white transition-colors hover-trigger mobile-link">Publishing</a>
-            <a href="artwork.html" class="hover:text-white transition-colors hover-trigger mobile-link">Album & Artwork</a>
-            <a href="architecture.html" class="text-white hover-trigger mobile-link">Architecture</a>
-            <a href="#" class="hover:text-white transition-colors hover-trigger mobile-link">Contact</a>
+            <a href="publishing.html" class="hover:text-white transition-colors mobile-link">Publishing</a>
+            <a href="artwork.html" class="hover:text-white transition-colors mobile-link">Album & Artwork</a>
+            <a href="architecture.html" class="text-white mobile-link">Architecture</a>
+            <a href="#" class="hover:text-white transition-colors mobile-link">Contact</a>
         </div>
     </div>
 
     <!-- Navigation -->
     <nav class="glass-nav fixed w-full z-50 top-0 transition-all duration-300">
         <div class="max-w-screen-xl mx-auto px-6 h-16 flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-2 text-white group hover-trigger">
+            <a href="index.html" class="flex items-center gap-2 text-white group">
                 <i class="fa-regular fa-paper-plane text-lg transform group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform duration-300"></i>
                 <span class="font-bold text-lg tracking-tight">PAPERTAINER</span>
             </a>
 
             <div class="hidden md:flex space-x-10 text-xs font-medium text-gray-400">
-                <a href="publishing.html" class="hover:text-white transition-colors hover-trigger">Publishing</a>
-                <a href="artwork.html" class="hover:text-white transition-colors hover-trigger">Album & Artwork</a>
-                <a href="architecture.html" class="text-white hover-trigger">Architecture</a>
-                <a href="#" class="hover:text-white transition-colors hover-trigger">Contact</a>
+                <a href="publishing.html" class="hover:text-white transition-colors">Publishing</a>
+                <a href="artwork.html" class="hover:text-white transition-colors">Album & Artwork</a>
+                <a href="architecture.html" class="text-white">Architecture</a>
+                <a href="#" class="hover:text-white transition-colors">Contact</a>
             </div>
 
-            <button id="mobile-menu-btn" class="md:hidden text-white hover-trigger p-2">
+            <button id="mobile-menu-btn" class="md:hidden text-white p-2">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
         </div>
@@ -145,8 +121,7 @@
 
     <!-- Main Visual (Image 1) -->
     <section class="px-4 md:px-6 pb-20">
-        <div class="max-w-screen-xl mx-auto h-[70vh] reveal-img-container rounded-lg group hover-trigger cursor-none">
-            <!-- Main Image Updated -->
+        <div class="max-w-screen-xl mx-auto h-[70vh] reveal-img-container rounded-lg group">
             <img src="https://www.papertainer.com/architecture_01.jpg" 
                  alt="Apgujeong Street Design Main" 
                  class="reveal-img w-full h-full object-cover"
@@ -193,15 +168,13 @@
 
             <!-- Project Images (Image 2 & 3) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="h-[500px] reveal-img-container rounded-lg overflow-hidden group hover-trigger cursor-none">
-                    <!-- Detail Image 1 Updated -->
+                <div class="h-[500px] reveal-img-container rounded-lg overflow-hidden group">
                     <img src="https://www.papertainer.com/architecture_02.jpg" 
                          alt="Landscape and Color Plan" 
                          class="reveal-img w-full h-full object-cover"
                          onerror="this.src='https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1600&auto=format&fit=crop'">
                 </div>
-                <div class="h-[500px] reveal-img-container rounded-lg overflow-hidden group hover-trigger cursor-none">
-                    <!-- Detail Image 2 Updated -->
+                <div class="h-[500px] reveal-img-container rounded-lg overflow-hidden group">
                     <img src="https://www.papertainer.com/architecture_03.jpg" 
                          alt="3D Visualization Detail" 
                          class="reveal-img w-full h-full object-cover"
@@ -213,32 +186,13 @@
 
     <!-- Footer -->
     <footer class="bg-black py-16 border-t border-gray-800 text-xs text-gray-500">
-        <div class="max-w-screen-xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+        <div class="max-w-screen-xl mx-auto px-6 flex justify-center items-center">
             <p>Copyright © 2024 Papertainer Inc. All rights reserved.</p>
-            <a href="index.html" class="hover:text-white mt-4 md:mt-0 hover-trigger">Back to Home</a>
         </div>
     </footer>
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
-
-        // Custom Cursor
-        const cursorDot = document.querySelector('.cursor-dot');
-        const cursorOutline = document.querySelector('.cursor-outline');
-        const hoverTriggers = document.querySelectorAll('.hover-trigger');
-
-        window.addEventListener('mousemove', (e) => {
-            const posX = e.clientX;
-            const posY = e.clientY;
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
-            cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
-        });
-
-        hoverTriggers.forEach(trigger => {
-            trigger.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-            trigger.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
-        });
 
         // Mobile Menu
         const mobileBtn = document.getElementById('mobile-menu-btn');
@@ -263,7 +217,7 @@
         if(mobileClose) mobileClose.addEventListener('click', toggleMenu);
         mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
 
-        // Fade Up
+        // Fade Up Animation
         const fadeUps = document.querySelectorAll('.animate-fade-up');
         fadeUps.forEach(el => {
             gsap.fromTo(el, 
