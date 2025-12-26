@@ -3,92 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Papertainer - Beyond the Page</title>
+    <title>Papertainer - Contact</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         /* Free Google Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
             background-color: #050507;
             color: #f5f5f7;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        ::-webkit-scrollbar {
-            width: 0px;
-            background: transparent;
-        }
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
 
         /* Glass Nav */
         .glass-nav {
-            background: rgba(5, 5, 7, 0.7);
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: saturate(180%) blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .section-h { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; }
-        .text-gradient { background: linear-gradient(135deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .text-gradient-blue { background: linear-gradient(135deg, #2980b9 0%, #6dd5fa 100%, #ffffff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        /* Text Gradient */
+        .text-gradient {
+            background: linear-gradient(135deg, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Email Button Interaction */
+        .email-link-container {
+            position: relative;
+            display: inline-block;
+        }
+        .email-link {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            position: relative;
+            transition: color 0.3s;
+            letter-spacing: -0.02em;
+        }
+        .email-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background-color: #fff;
+            transition: width 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .email-link:hover::after {
+            width: 100%;
+        }
         
-        .hover-zoom-img { transition: transform 0.7s cubic-bezier(0.2, 1, 0.3, 1); }
-        .group:hover .hover-zoom-img { transform: scale(1.05); }
-
-        .btn-apple {
-            background: #fff; color: #000; border-radius: 9999px; padding: 12px 32px;
-            font-weight: 600; transition: all 0.3s ease; position: relative; overflow: hidden;
-        }
-        .btn-apple:hover { transform: scale(1.05); }
-
-        .video-overlay { background: linear-gradient(to bottom, rgba(5,5,7,0.3) 0%, rgba(5,5,7,1) 100%); }
-
-        /* Paper Plane Wrapper for Intro Animation */
-        .paper-plane-wrapper {
-            position: fixed;
-            top: 0; left: 0;
-            width: 50px; height: 50px;
-            z-index: 60;
-            pointer-events: none;
+        .copy-feedback {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(4px);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #aaa;
             opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
         }
-        .paper-plane-svg {
-            width: 100%; height: 100%;
-            fill: white;
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+
+        /* Map Container */
+        .map-container iframe {
+            filter: grayscale(100%) invert(90%); /* 다크모드 맵 스타일 */
+            transition: filter 0.3s;
+        }
+        .map-container:hover iframe {
+            filter: grayscale(0%) invert(0%); /* 호버 시 컬러 */
         }
     </style>
 </head>
 <body>
-    
-    <!-- Paper Plane for Intro -->
-    <div class="paper-plane-wrapper" id="plane-wrapper">
-        <svg class="paper-plane-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2 12l20-9-9 20-2-8-9-3z" />
-        </svg>
-    </div>
 
     <!-- Mobile Menu Overlay -->
     <div id="mobile-menu-overlay" class="fixed inset-0 z-[60] bg-black bg-opacity-95 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
-        <button id="mobile-menu-close" class="absolute top-6 right-6 text-white text-2xl p-4"><i class="fa-solid fa-xmark"></i></button>
+        <button id="mobile-menu-close" class="absolute top-6 right-6 text-white text-2xl p-4">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
         <div class="flex flex-col space-y-8 text-center text-2xl font-bold text-gray-400">
             <a href="publishing.html" class="hover:text-white transition-colors mobile-link">Publishing</a>
             <a href="artwork.html" class="hover:text-white transition-colors mobile-link">Album & Artwork</a>
             <a href="architecture.html" class="hover:text-white transition-colors mobile-link">Architecture</a>
-            <a href="contact.html" class="hover:text-white transition-colors mobile-link">Contact</a>
+            <a href="contact.html" class="text-white mobile-link">Contact</a>
         </div>
     </div>
 
     <!-- Navigation -->
-    <nav class="glass-nav fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
+    <nav class="glass-nav fixed w-full z-50 top-0 transition-all duration-300">
         <div class="max-w-screen-xl mx-auto px-6 h-16 flex justify-between items-center">
             <a href="index.html" class="flex items-center gap-2 text-white group">
-                <!-- Static Logo (Small Plane Icon) -->
                 <i class="fa-regular fa-paper-plane text-lg transform group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform duration-300"></i>
                 <span class="font-bold text-lg tracking-tight">PAPERTAINER</span>
             </a>
@@ -97,7 +117,7 @@
                 <a href="publishing.html" class="hover:text-white transition-colors">Publishing</a>
                 <a href="artwork.html" class="hover:text-white transition-colors">Album & Artwork</a>
                 <a href="architecture.html" class="hover:text-white transition-colors">Architecture</a>
-                <a href="contact.html" class="hover:text-white transition-colors">Contact</a>
+                <a href="contact.html" class="text-white">Contact</a>
             </div>
 
             <button id="mobile-menu-btn" class="md:hidden text-white p-2">
@@ -106,87 +126,78 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="section-h relative overflow-hidden" id="hero">
-        <div class="absolute inset-0 z-0">
-            <!-- Background Image -->
-            <div class="w-full h-full bg-[url('https://images.unsplash.com/photo-1628126235206-5260b9ea6441?q=80&w=2574&auto=format&fit=crop')] bg-cover bg-center opacity-40 scale-105 hero-bg"></div>
-            <div class="video-overlay absolute inset-0"></div>
+    <!-- Main Content -->
+    <section class="min-h-screen flex flex-col justify-center items-center px-6 pt-20 relative overflow-hidden" id="contact-section">
+        <!-- Background Elements with Parallax (Updated) -->
+        <div class="absolute inset-0 z-0 bg-[#111]"> <!-- Fallback color -->
+            <!-- Updated Image URL and simpler inline style -->
+            <div class="w-full h-full bg-cover bg-center opacity-40 scale-110 transition-transform duration-100 ease-out" 
+                 style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop');" 
+                 id="contact-bg"></div>
+            <!-- Dark Overlay for Readability -->
+            <div class="absolute inset-0 bg-black/60"></div>
         </div>
 
-        <div class="relative z-10 text-center px-4 max-w-6xl mx-auto mt-10">
-            <h1 class="hero-title text-6xl md:text-9xl font-black tracking-tighter mb-6 leading-tight">
-                Beyond<br>
-                <span class="text-gradient">The Page.</span>
+        <div class="relative z-10 text-center max-w-4xl mx-auto w-full">
+            <span class="text-gray-400 text-xs font-bold uppercase tracking-[0.2em] mb-6 block animate-fade-up">Get in Touch</span>
+            
+            <h1 class="text-5xl md:text-7xl font-black tracking-tighter leading-tight mb-12 animate-fade-up" style="animation-delay: 0.1s;">
+                Let's Create<br>
+                <span class="text-gradient">Something Extraordinary.</span>
             </h1>
-            <p class="hero-subtitle text-lg md:text-2xl text-gray-300 font-light mb-12 opacity-0 transform translate-y-4 max-w-2xl mx-auto">
-                We craft books, then extend that tactile sensibility into digital realms, sonic landscapes, and physical spaces.
+
+            <p class="text-gray-300 text-lg md:text-xl font-light mb-16 max-w-2xl mx-auto animate-fade-up" style="animation-delay: 0.2s;">
+                We are always looking for new challenges and collaborations.<br>
+                Whether you have a question or just want to say hi, we'll try our best to get back to you!
             </p>
-            <div class="hero-btns opacity-0 transform translate-y-4 flex flex-col md:flex-row gap-6 justify-center items-center">
-                <a href="publishing.html" class="btn-apple">View Portfolio</a>
+
+            <div class="animate-fade-up" style="animation-delay: 0.3s;">
+                <div class="email-link-container">
+                    <div class="copy-feedback">Click to Send Mail</div>
+                    <a href="mailto:hello@papertainer.com" class="email-link hover:text-gray-300">
+                        hello@papertainer.com
+                    </a>
+                </div>
             </div>
-        </div>
 
-        <!-- Scroll Indicator (Centered with width 100%) -->
-        <div class="absolute bottom-10 w-full left-0 text-center text-gray-500 text-xs animate-bounce">
-            Scroll to Explore
-        </div>
-    </section>
-
-    <!-- Philosophy -->
-    <section class="min-h-screen bg-black flex items-center justify-center py-20 px-6 relative">
-        <div class="max-w-5xl mx-auto relative z-10">
-            <div class="reveal-text text-3xl md:text-6xl font-bold leading-tight text-gray-800">
-                <span class="text-white highlight-text opacity-10 block mb-2">Text is our foundation.</span>
-                <span class="text-white highlight-text opacity-10 block mb-2">On paper, we build worlds.</span>
-                <span class="text-white highlight-text opacity-10 block mb-2">On screens, we architect experiences.</span>
-                <span class="text-white highlight-text opacity-10 block mb-2">In spaces, we plant stories.</span>
-                <span class="text-gradient-blue highlight-text opacity-10 block mt-12">At Papertainer, every creation begins with 'Editing'.</span>
+            <div class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-12 text-left max-w-3xl mx-auto border-t border-white/10 pt-12 animate-fade-up" style="animation-delay: 0.4s;">
+                <div>
+                    <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-location-dot text-gray-500"></i> Location
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        06234, 3rd Floor, Seonggok Building,<br>
+                        128 Teheran-ro, Gangnam-gu,<br>
+                        Seoul, Republic of Korea
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-envelope text-gray-500"></i> Business Inquiries
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        For project requests and partnership opportunities, please email us directly.
+                    </p>
+                </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Works Grid -->
-    <section class="py-32 bg-[#050507] px-4 md:px-8 relative z-20">
-        <div class="max-w-screen-xl mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-16 px-2">Selected Works</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[450px]">
-                
-                <!-- Publishing -->
-                <a href="publishing.html" class="group md:col-span-2 relative rounded-3xl overflow-hidden bg-gray-900 border border-gray-800 cursor-pointer">
-                    <img src="https://www.papertainer.com/ebook_01.png" alt="Publishing" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1544256718-3bcf237f3974?q=80&w=2671&auto=format&fit=crop'">
-                    <div class="absolute bottom-0 left-0 p-10 w-full bg-gradient-to-t from-black via-black/80 to-transparent">
-                        <span class="text-white bg-white/10 backdrop-blur border border-white/10 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-4 inline-block">Core Identity</span>
-                        <h3 class="text-3xl font-bold text-white mb-2">Editorial & Publishing</h3>
-                        <p class="text-gray-400 text-sm">From curation to print. We understand the physicality of paper.</p>
-                    </div>
-                </a>
-
-                <!-- Album & Artwork -->
-                <a href="artwork.html" class="group relative rounded-3xl overflow-hidden bg-gray-900 border border-gray-800 cursor-pointer">
-                    <img src="https://thinktainer-collab.github.io/papertainer/album_01.jpeg" alt="Album Art" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" onerror="this.src='https://raw.githubusercontent.com/thinktainer-collab/papertainer/main/album_01.jpeg'">
-                    <div class="absolute top-0 left-0 p-8 w-full">
-                        <span class="text-purple-400 text-[10px] font-bold uppercase tracking-widest mb-2 block">Visual Arts</span>
-                        <h3 class="text-2xl font-bold text-white">Album & Artwork</h3>
-                    </div>
-                </a>
-
-                <!-- Architecture -->
-                <a href="architecture.html" class="group md:col-span-3 relative rounded-3xl overflow-hidden bg-gray-900 border border-gray-800 cursor-pointer">
-                    <img src="https://www.papertainer.com/architecture_01.jpg" alt="Space" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1449824913929-49aa711563b1?q=80&w=2670&auto=format&fit=crop'">
-                    <div class="absolute bottom-0 left-0 p-10 w-full bg-gradient-to-t from-black via-black/80 to-transparent">
-                        <span class="text-yellow-500 text-[10px] font-bold uppercase tracking-widest mb-4 inline-block">Spatial Design</span>
-                        <h3 class="text-3xl font-bold text-white mb-2">Architecture & Space</h3>
-                        <p class="text-gray-400 text-sm">Extending the structural beauty of paper into physical dimensions.</p>
-                    </div>
-                </a>
-
+            <!-- Google Map Section (Updated Address) -->
+            <div class="mt-12 w-full max-w-3xl mx-auto h-80 rounded-2xl overflow-hidden border border-white/10 shadow-2xl animate-fade-up map-container relative z-10" style="animation-delay: 0.5s;">
+                <iframe 
+                    src="https://www.google.com/maps?q=128+Teheran-ro,+Gangnam-gu,+Seoul&output=embed" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-black py-16 border-t border-gray-800 text-xs text-gray-500">
+    <footer class="bg-black py-16 border-t border-gray-800 text-xs text-gray-500 relative z-10">
         <div class="max-w-screen-xl mx-auto px-6 text-center">
             <p>Copyright © 2025 PAPERTAINER.COM All rights reserved.</p>
         </div>
@@ -195,7 +206,7 @@
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // Mobile Menu
+        // Mobile Menu Logic
         const mobileBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu-overlay');
         const mobileClose = document.getElementById('mobile-menu-close');
@@ -218,36 +229,37 @@
         if(mobileClose) mobileClose.addEventListener('click', toggleMenu);
         mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
 
-        // Hero Anim
-        const tlHero = gsap.timeline();
-        tlHero.to(".hero-bg", { scale: 1, duration: 2.5, ease: "power2.out" }, 0)
-              .from(".hero-title", { y: 100, opacity: 0, duration: 1.5, ease: "power3.out" }, 0.5)
-              .to(".hero-subtitle", { y: 0, opacity: 1, duration: 1, ease: "power3.out" }, "-=0.8")
-              .to(".hero-btns", { y: 0, opacity: 1, duration: 1, ease: "power3.out" }, "-=0.8");
-
-        // Paper Plane Intro Animation
-        const plane = document.getElementById('plane-wrapper');
-        gsap.set(plane, { autoAlpha: 1 });
-        gsap.fromTo(plane, 
-            { x: -100, y: window.innerHeight * 0.5, rotation: 15, scale: 0.5 },
-            { 
-                x: window.innerWidth * 0.1, // Position near title
-                y: window.innerHeight * 0.2, 
-                rotation: -10, 
-                scale: 1, 
-                duration: 2.5, 
-                ease: "power2.out",
-                delay: 0.2
-            }
-        );
-
-        // Text Reveal
-        gsap.utils.toArray('.highlight-text').forEach((text) => {
-            gsap.to(text, {
-                scrollTrigger: { trigger: text, start: "top 80%", end: "top 45%", scrub: 1 },
-                opacity: 1, color: "#ffffff"
-            });
+        // Fade Up Animation
+        const fadeUps = document.querySelectorAll('.animate-fade-up');
+        fadeUps.forEach(el => {
+            gsap.fromTo(el, 
+                { y: 50, opacity: 0 },
+                {
+                    y: 0, opacity: 1, duration: 1, ease: "power3.out",
+                    delay: parseFloat(el.style.animationDelay) || 0
+                }
+            );
         });
+
+        // Background Parallax Interaction
+        const contactSection = document.getElementById('contact-section');
+        const contactBg = document.getElementById('contact-bg');
+
+        if (contactSection && contactBg) {
+            contactSection.addEventListener('mousemove', (e) => {
+                // Calculate mouse position relative to the center of the screen
+                const xPos = (e.clientX / window.innerWidth - 0.5) * 40; // max 20px movement
+                const yPos = (e.clientY / window.innerHeight - 0.5) * 40;
+
+                // Animate background position opposite to mouse
+                gsap.to(contactBg, {
+                    x: -xPos,
+                    y: -yPos,
+                    duration: 1.5,
+                    ease: "power2.out"
+                });
+            });
+        }
     </script>
 </body>
 </html>
