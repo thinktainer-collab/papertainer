@@ -10,14 +10,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap');
+        /* Free Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: #050507;
             color: #f5f5f7;
             overflow-x: hidden;
-            /* cursor: none; 제거 */
             -webkit-font-smoothing: antialiased;
         }
 
@@ -73,14 +73,14 @@
         </svg>
     </div>
 
-    <!-- Mobile Menu -->
+    <!-- Mobile Menu Overlay -->
     <div id="mobile-menu-overlay" class="fixed inset-0 z-[60] bg-black bg-opacity-95 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
         <button id="mobile-menu-close" class="absolute top-6 right-6 text-white text-2xl p-4"><i class="fa-solid fa-xmark"></i></button>
         <div class="flex flex-col space-y-8 text-center text-2xl font-bold text-gray-400">
             <a href="publishing.html" class="hover:text-white transition-colors mobile-link">Publishing</a>
             <a href="artwork.html" class="hover:text-white transition-colors mobile-link">Album & Artwork</a>
             <a href="architecture.html" class="hover:text-white transition-colors mobile-link">Architecture</a>
-            <a href="#" class="hover:text-white transition-colors mobile-link">Contact</a>
+            <a href="contact.html" class="hover:text-white transition-colors mobile-link">Contact</a>
         </div>
     </div>
 
@@ -88,28 +88,36 @@
     <nav class="glass-nav fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
         <div class="max-w-screen-xl mx-auto px-6 h-16 flex justify-between items-center">
             <a href="index.html" class="flex items-center gap-2 text-white group">
+                <!-- Static Logo (Small Plane Icon) -->
                 <i class="fa-regular fa-paper-plane text-lg transform group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform duration-300"></i>
                 <span class="font-bold text-lg tracking-tight">PAPERTAINER</span>
             </a>
+
             <div class="hidden md:flex space-x-10 text-xs font-medium text-gray-400">
                 <a href="publishing.html" class="hover:text-white transition-colors">Publishing</a>
                 <a href="artwork.html" class="hover:text-white transition-colors">Album & Artwork</a>
                 <a href="architecture.html" class="hover:text-white transition-colors">Architecture</a>
-                <a href="#" class="hover:text-white transition-colors">Contact</a>
+                <a href="contact.html" class="hover:text-white transition-colors">Contact</a>
             </div>
-            <button id="mobile-menu-btn" class="md:hidden text-white p-2"><i class="fa-solid fa-bars text-xl"></i></button>
+
+            <button id="mobile-menu-btn" class="md:hidden text-white p-2">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="section-h relative overflow-hidden" id="hero">
         <div class="absolute inset-0 z-0">
+            <!-- Background Image -->
             <div class="w-full h-full bg-[url('https://images.unsplash.com/photo-1628126235206-5260b9ea6441?q=80&w=2574&auto=format&fit=crop')] bg-cover bg-center opacity-40 scale-105 hero-bg"></div>
             <div class="video-overlay absolute inset-0"></div>
         </div>
+
         <div class="relative z-10 text-center px-4 max-w-6xl mx-auto mt-10">
             <h1 class="hero-title text-6xl md:text-9xl font-black tracking-tighter mb-6 leading-tight">
-                Beyond<br><span class="text-gradient">The Page.</span>
+                Beyond<br>
+                <span class="text-gradient">The Page.</span>
             </h1>
             <p class="hero-subtitle text-lg md:text-2xl text-gray-300 font-light mb-12 opacity-0 transform translate-y-4 max-w-2xl mx-auto">
                 We craft books, then extend that tactile sensibility into digital realms, sonic landscapes, and physical spaces.
@@ -183,7 +191,9 @@
 
     <!-- Footer -->
     <footer class="bg-black py-16 border-t border-gray-800 text-xs text-gray-500">
-        <div class="max-w-screen-xl mx-auto px-6 text-center"><p>Copyright © 2024 Papertainer Inc. All rights reserved.</p></div>
+        <div class="max-w-screen-xl mx-auto px-6 text-center">
+            <p>Copyright © 2025 PAPERTAINER.COM All rights reserved.</p>
+        </div>
     </footer>
 
     <script>
@@ -194,6 +204,7 @@
         const mobileMenu = document.getElementById('mobile-menu-overlay');
         const mobileClose = document.getElementById('mobile-menu-close');
         const mobileLinks = document.querySelectorAll('.mobile-link');
+
         function toggleMenu() {
             const isOpen = mobileMenu.classList.contains('pointer-events-auto');
             if (isOpen) {
@@ -206,9 +217,10 @@
                 document.body.style.overflow = 'hidden';
             }
         }
+
         if(mobileBtn) mobileBtn.addEventListener('click', toggleMenu);
         if(mobileClose) mobileClose.addEventListener('click', toggleMenu);
-        mobileLinks.forEach(l => l.addEventListener('click', toggleMenu));
+        mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
 
         // Hero Anim
         const tlHero = gsap.timeline();
@@ -217,7 +229,7 @@
               .to(".hero-subtitle", { y: 0, opacity: 1, duration: 1, ease: "power3.out" }, "-=0.8")
               .to(".hero-btns", { y: 0, opacity: 1, duration: 1, ease: "power3.out" }, "-=0.8");
 
-        // Paper Plane Intro Animation (New)
+        // Paper Plane Intro Animation
         const plane = document.getElementById('plane-wrapper');
         gsap.set(plane, { autoAlpha: 1 });
         gsap.fromTo(plane, 
