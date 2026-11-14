@@ -406,6 +406,7 @@ function once(flag, text, sec) { if (!S.flags[flag]) { S.flags[flag] = 1; say(te
 function hurt(n) {
   if (S.stage === 'win' || S.cine || P.hp <= 0) return;
   P.hp = Math.max(0, P.hp - n);
+  P.regen = 0;      // 피해를 입으면 회복 시간을 처음부터 다시 센다
   $('hurt').style.opacity = 0.9; S.shake = 0.25;
   sfx.hurt();
   if (navigator.vibrate) navigator.vibrate(60);
@@ -932,7 +933,7 @@ function update(dt) {
   const hurtEl = $('hurt');
   if (hurtEl.style.opacity > 0) hurtEl.style.opacity = Math.max(0, hurtEl.style.opacity - dt * 1.6);
 
-  // 체력 회복: 10초마다 10
+  // 체력 회복: 피해를 입지 않는 동안 10초마다 10씩 계속 회복
   P.regen += dt;
   if (P.regen >= 10) { P.regen -= 10; if (P.hp > 0) P.hp = Math.min(100, P.hp + 10); }
 
