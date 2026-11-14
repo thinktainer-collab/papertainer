@@ -80,6 +80,7 @@
   .screen ul { text-align: left; font-size: 13px; color: #dde; line-height: 1.6; margin: 8px 0; padding-left: 20px; max-width: 460px; }
   .big { margin-top: 12px; padding: 14px 44px; font-size: 20px; font-weight: 800; color: #000; background: #9f6; border: 3px solid #fff; border-radius: 6px; font-family: inherit; }
   .big:active { background: #cfa; }
+  .big.alt { background: #cde; padding: 10px 30px; font-size: 16px; }
   .screen a { color: #889; font-size: 12px; margin-top: 14px; }
   #dead h1 { color: #f55; text-shadow: 3px 3px 0 #400; }
   #win h1 { color: #fd5; text-shadow: 3px 3px 0 #640; }
@@ -111,7 +112,7 @@
 
 <div id="title" class="screen">
   <h1>좀비 미로 탈출</h1>
-  <p>열쇠 4개를 찾아 미로를 빠져나가라!</p>
+  <p>1화: 열쇠 4개를 찾아 미로를 빠져나가라! · 2화: 추격전과 좀비 떼</p>
   <ul>
     <li><b>왼쪽 화면</b> 드래그: 이동 &nbsp;/&nbsp; <b>오른쪽 화면</b> 드래그: 시점</li>
     <li><b>발사</b>: 권총 (탄환 무한, 좀비는 한 방)</li>
@@ -119,7 +120,8 @@
     <li>옷장에 숨으면 좀비가 찾지 못한다</li>
     <li>화면을 <b>가로</b>로 돌리면 더 편해요</li>
   </ul>
-  <button id="start" class="big">게임 시작</button>
+  <button id="start" class="big">1화 시작</button>
+  <button id="start2" class="big alt">2화 시작</button>
   <a href="index.html">← PAPERTAINER 홈으로</a>
 </div>
 
@@ -130,10 +132,11 @@
 </div>
 
 <div id="win" class="screen hidden">
-  <h1>탈출 성공!</h1>
+  <h1 id="wintitle">탈출 성공!</h1>
   <p id="wintime"></p>
-  <p>좀비들을 물리치고 마지막 문으로 빠져나왔다.</p>
-  <button id="again" class="big">처음부터 다시</button>
+  <p id="wintext"></p>
+  <button id="next" class="big">2화 계속하기</button>
+  <button id="again" class="big alt">이번 화 다시 하기</button>
   <a href="index.html">← PAPERTAINER 홈으로</a>
 </div>
 
