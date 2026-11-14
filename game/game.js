@@ -383,7 +383,7 @@ const sfx = {
 };
 
 // ───────────────────────── 게임 상태 ─────────────────────────
-const P = { x: 0, z: 0, yaw: Math.PI, pitch: 0, eye: 1.6, hp: 100, keys: 0, hidden: null, inMecha: false, hurtCd: 0, bob: 0 };
+const P = { x: 0, z: 0, yaw: Math.PI, pitch: 0, eye: 1.6, hp: 100, regen: 0, keys: 0, hidden: null, inMecha: false, hurtCd: 0, bob: 0 };
 const S = { stage: 'title', running: false, time: 0, fireCd: 0, cine: null, msgT: 0, flags: {}, shake: 0 };
 let zombies = [], boss = null, ballZ = null, balls = [];
 const distMap = new Int16Array(GW * GH);
@@ -480,7 +480,7 @@ function setStage(st) {
 // 구간 처음 상태로 되돌린다 (체력 0이 됐을 때 / 구간 시작)
 function startStage(st) {
   setStage(st);
-  P.hp = 100; P.hidden = null; P.hurtCd = 1; P.pitch = 0;
+  P.hp = 100; P.regen = 0; P.hidden = null; P.hurtCd = 1; P.pitch = 0;
   S.cine = null; S.fireCd = 0;
   clearBalls();
   $('closet').classList.add('hidden');
@@ -789,7 +789,7 @@ function updateZombies(dt) {
     }
     z.g.position.set(z.x, 0, z.z);
     z.atk -= dt;
-    if (!P.hidden && d < 1.15 && z.atk <= 0) { z.atk = 1.1; hurt(20); }
+    if (!P.hidden && d < 1.15 && z.atk <= 0) { z.atk = 1.1; hurt(2); }
   }
 }
 
@@ -931,6 +931,10 @@ function update(dt) {
   if (S.msgT > 0 && (S.msgT -= dt) <= 0) $('msg').classList.remove('show');
   const hurtEl = $('hurt');
   if (hurtEl.style.opacity > 0) hurtEl.style.opacity = Math.max(0, hurtEl.style.opacity - dt * 1.6);
+
+  // 체력 회복: 10초마다 10
+  P.regen += dt;
+  if (P.regen >= 10) { P.regen -= 10; if (P.hp > 0) P.hp = Math.min(100, P.hp + 10); }
 
   // 이동
   let f = -stick.y, s = stick.x;
