@@ -925,7 +925,7 @@ function updateZombies(dt) {
     }
     z.g.position.set(z.x, 0, z.z);
     z.atk -= dt;
-    if (!P.hidden && d < 1.15 && z.atk <= 0) { z.atk = 1.1; hurt(2); }
+    if (!P.hidden && d < 1.15 && z.atk <= 0) { z.atk = 1.1; hurt(4); }
   }
 }
 
@@ -998,7 +998,7 @@ function updateHorde(dt) {
     }
     z.g.position.set(z.x, 0, z.z);
     z.atk -= dt;
-    if (Math.hypot(P.x - z.x, P.z - z.z) < (P.inMecha ? 2.2 : 1.2) && z.atk <= 0 && S.hitCd <= 0) { z.atk = 1.1; S.hitCd = 0.25; hurt(2); }
+    if (Math.hypot(P.x - z.x, P.z - z.z) < (P.inMecha ? 2.2 : 1.2) && z.atk <= 0 && S.hitCd <= 0) { z.atk = 1.1; S.hitCd = 0.25; hurt(4); }
   }
   zombies = zombies.filter((z) => !z.gone);
   while (S.toSpawn > 0 && alive < HORDE_MAX) { spawnHordeZombie(); S.toSpawn--; alive++; }
