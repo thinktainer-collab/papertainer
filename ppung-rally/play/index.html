@@ -1,0 +1,85 @@
+<title>뿡뿡 랠리 버전 비교</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Dodum&display=swap">
+<style>
+/* Layout: a garage noticeboard with two big launch cards side by side (old 2D game, new 3D game), a comparison table under them, and a small link to the parts showroom. Single dark look shared with the games. */
+:root{
+  --night:#1b1511;
+  --panel:#2b211a;
+  --panel-2:#3a2c21;
+  --line:#5a4532;
+  --ink:#fff4e2;
+  --muted:#c9b597;
+  --accent:#ffcf2e;
+  --fart:#a9cc4c;
+  --display:"Black Han Sans","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color-scheme:dark;
+}
+html{background:var(--night)}
+body{background:var(--night);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:1000px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 48px;display:flex;flex-direction:column;gap:22px}
+h1,h2{font-family:var(--display);font-weight:400;margin:0;line-height:1.15;text-wrap:balance}
+h1{font-size:clamp(32px,6vw,52px);color:var(--accent);text-shadow:0 4px 0 #8a5a00}
+h2{font-size:26px}
+p{margin:0}
+.lede{color:var(--muted);max-width:62ch}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:720px){.cards{grid-template-columns:1fr}}
+.card{display:flex;flex-direction:column;gap:12px;padding:20px;border-radius:20px;background:var(--panel);border:2px solid var(--line);text-decoration:none;color:var(--ink);min-width:0}
+.card:hover,.card:focus-visible{border-color:var(--accent);outline:none}
+.card .ver{font-family:var(--display);font-size:13px;letter-spacing:.08em;color:var(--muted)}
+.card.new .ver{color:var(--fart)}
+.card p{color:var(--muted)}
+.go{align-self:flex-start;font-family:var(--display);font-size:18px;padding:10px 18px;border-radius:12px;background:var(--accent);color:#2b1d00;box-shadow:0 4px 0 #8a5a00}
+.card.old .go{background:var(--panel-2);color:var(--ink);box-shadow:0 4px 0 #120d0a;border:2px solid var(--line)}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+th{font-family:var(--display);font-weight:400;text-align:left;color:var(--muted);font-size:13px;padding:6px 8px;border-bottom:2px solid var(--line)}
+td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{font-family:var(--display);color:var(--accent);white-space:nowrap}
+.note{font-size:13px;color:var(--muted)}
+.note a{color:var(--accent)}
+</style>
+
+<main class="wrap">
+  <header style="display:flex;flex-direction:column;gap:10px">
+    <h1>뿡뿡 랠리</h1>
+    <p class="lede">같은 게임 규칙을 두 가지 화면으로 만들었어요. 둘 다 플레이해 보고 어느 쪽이 더 재밌는지 비교해 주세요. 저장 기록은 버전마다 따로 남아요.</p>
+  </header>
+
+  <div class="cards">
+    <a class="card old" href="v1.html">
+      <span class="ver">버전 1 · 2D</span>
+      <h2>흙길 오프로드 트럭</h2>
+      <p>2D 캔버스로 입체를 흉내 낸 처음 버전이에요. 직접 도형으로 그린 트럭 4대가 달려요.</p>
+      <span class="go">2D로 플레이</span>
+    </a>
+    <a class="card new" href="v2.html">
+      <span class="ver">버전 2 · 3D 새 버전</span>
+      <h2>동물 레이서 3D</h2>
+      <p>Kenney 동물과 차량 모델로 만든 3D 버전이에요. 차고에서 운전할 동물, 탈것, 패션을 고를 수 있어요.</p>
+      <span class="go">3D로 플레이</span>
+    </a>
+  </div>
+
+  <section style="display:flex;flex-direction:column;gap:10px">
+    <h2>무엇이 달라졌나</h2>
+    <div class="scroll"><table>
+      <thead><tr><th>항목</th><th>버전 1 · 2D</th><th>버전 2 · 3D</th></tr></thead>
+      <tbody>
+        <tr><td>화면</td><td>2D 캔버스, 비스듬한 시점 흉내</td><td>진짜 3D, 그림자와 원근감</td></tr>
+        <tr><td>레이서</td><td>도형으로 그린 트럭 4대</td><td>동물 24종 × 탈것 8종 × 패션 6종 조합</td></tr>
+        <tr><td>탈것</td><td>트럭만</td><td>키트 트럭 4색, 오토바이, 밥솥 카트, 다리미 바이크, 택배상자 트럭</td></tr>
+        <tr><td>라이벌</td><td>불꽃 트럭, 파란 번개, 풀잎 덤프</td><td>불꽃 여우(트럭), 밥솥 펭귄, 상자 판다</td></tr>
+        <tr><td>캐릭터 반응</td><td>없음</td><td>추월, 골인 때 동물이 기뻐하거나 시무룩해함 (원래 들어 있는 애니메이션)</td></tr>
+        <tr><td>업그레이드 변신</td><td>도형 부품이 자라남</td><td>키트 스타일 부품(흡기구, 날개, 방귀 탱크, 큰 바퀴)이 튀어나옴</td></tr>
+        <tr><td>코스, 규칙, 조작</td><td colspan="2">같음: 코스 3개(8자 다리, 협곡 점프, 롤러코스터), 언덕과 점프, 방귀 부스트, 4바퀴, 좌우 버튼 조작</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <p class="note">부품만 따로 보고 싶으면 <a href="showroom.html">키트 쇼룸</a>에서 동물과 탈것을 조합해 볼 수 있어요. 3D 모델: Kenney Cube Pets, Starter Kit Racing (CC0).</p>
+</main>
