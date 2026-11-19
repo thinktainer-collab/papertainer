@@ -1,0 +1,204 @@
+<title>뿡뿡 랠리 키트 쇼룸</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Dodum&display=swap">
+<style>
+/* Layout: a bright toy-box showroom to match the Kenney kits. Big 3D stage on top, then three rows of picker chips (who drives, what they drive, what they wear) and a row of actions. */
+:root{
+  --sky:#bfe6f2;
+  --paper:#fffaf0;
+  --ink:#2b2622;
+  --muted:#6f655b;
+  --line:#e2d6c2;
+  --accent:#ffc83d;
+  --accent-ink:#4a3200;
+  --green:#7cc45a;
+  --pink:#ff8fb1;
+  --display:"Black Han Sans","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#221d19;--ink:#fff4e2;--muted:#c9b597;--line:#4a3d31;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#221d19;--ink:#fff4e2;--muted:#c9b597;--line:#4a3d31;color-scheme:dark}
+[hidden]{display:none!important}
+html{background:var(--paper)}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;margin:0}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:22px 44px;display:flex;flex-direction:column;gap:16px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,5vw,44px);margin:0;line-height:1.1;text-wrap:balance}
+p{margin:0}
+.lede{color:var(--muted);max-width:70ch}
+.eyebrow{font-family:var(--display);font-size:13px;letter-spacing:.08em;color:var(--green)}
+.stage{position:relative;border-radius:22px;overflow:hidden;background:linear-gradient(#bfe6f2,#e6f5ea);aspect-ratio:16/9;max-width:100%;touch-action:none;cursor:grab;border:3px solid var(--line)}
+.stage canvas{display:block;width:100%;height:100%}
+.tag{position:absolute;left:14px;top:12px;font-family:var(--display);font-size:20px;color:#2b2622;background:rgba(255,250,240,.85);padding:4px 12px;border-radius:12px}
+.loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:20px;color:#2b2622}
+.row{display:flex;flex-direction:column;gap:6px}
+.row h2{font-family:var(--display);font-weight:400;font-size:15px;margin:0;color:var(--muted)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-family:var(--display);font-size:15px;padding:7px 12px;border-radius:999px;border:2px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip:focus-visible,.act:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.act{font-family:var(--display);font-size:17px;border:0;border-radius:14px;padding:10px 16px;cursor:pointer;background:var(--green);color:#173a0c;box-shadow:0 4px 0 #3f7a2a}
+.act.y{background:var(--accent);color:var(--accent-ink);box-shadow:0 4px 0 #a67a10}
+.act.ghost{background:transparent;color:var(--ink);border:2px solid var(--line);box-shadow:none}
+.act.ghost[aria-pressed="true"]{border-color:var(--accent)}
+.act:active{transform:translateY(3px);box-shadow:none}
+.note{font-size:13px;color:var(--muted)}
+</style>
+
+<main class="wrap">
+  <header>
+    <p class="eyebrow">뿡뿡 랠리 · 시안 v3 · Kenney 키트 조합</p>
+    <h1>키트 쇼룸</h1>
+    <p class="lede">올려주신 Cube Pets 동물과 Starter Kit Racing 차량, 트랙을 그대로 불러왔어요. 동물, 탈것, 패션을 골라 조합해 보세요. 동물은 원래 들어 있는 애니메이션으로 움직이고, 헬멧과 선글라스는 키트 스타일에 맞춰 블록으로 만들었어요.</p>
+  </header>
+
+  <div class="stage" id="stage"><span class="tag" id="tag">고양이 · 노랑 트럭</span><div class="loading" id="loading">모델 불러오는 중…</div></div>
+
+  <div class="acts">
+    <button class="act" id="aBoost">부스트!</button>
+    <button class="act y" id="aJump">점프</button>
+    <button class="act ghost" id="aGame" aria-pressed="false">게임 시점</button>
+    <button class="act ghost" id="aSpin" aria-pressed="true">자동 회전</button>
+  </div>
+  <section class="row"><h2>누가 운전해요</h2><div class="chips" id="cAnimal"></div></section>
+  <section class="row"><h2>무엇을 타요</h2><div class="chips" id="cRide"></div></section>
+  <section class="row"><h2>무엇을 써요</h2><div class="chips" id="cWear"></div></section>
+  <section class="row"><h2>동작</h2><div class="chips" id="cMove"></div></section>
+  <p class="note">3D 모델: Kenney의 Cube Pets(CC0), Starter Kit Racing(코드 MIT, 모델 CC0). Cube Pets에는 오리가 없어서 병아리와 앵무새로 대신 볼 수 있어요.</p>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script>
+(() => {
+'use strict';
+const $=id=>document.getElementById(id);
+const stage=$('stage');
+const ANIMALS=[['cat','고양이'],['chick','병아리'],['parrot','앵무새'],['penguin','펭귄'],['dog','강아지'],['fox','여우'],['bunny','토끼'],['panda','판다'],
+  ['tiger','호랑이'],['lion','사자'],['pig','돼지'],['cow','소'],['koala','코알라'],['monkey','원숭이'],['polar','북극곰'],['beaver','비버'],
+  ['hog','멧돼지'],['deer','사슴'],['elephant','코끼리'],['giraffe','기린'],['bee','벌'],['crab','게'],['caterpillar','애벌레'],['fish','물고기']];
+const RIDES=[['vehicle-truck-yellow','노랑 트럭'],['vehicle-truck-red','빨강 트럭'],['vehicle-truck-green','초록 트럭'],['vehicle-truck-purple','보라 트럭'],['vehicle-motorcycle','오토바이']];
+const WEARS=[['none','맨머리'],['helmet','레이싱 헬멧'],['shades','선글라스'],['goggles','비행 고글'],['crown','왕관'],['party','파티 모자']];
+const MOVES=[['idle','대기'],['dance','춤'],['gesture-positive','신남'],['gesture-negative','시무룩']];
+if(!window.THREE||!THREE.GLTFLoader){$('loading').textContent='3D 엔진을 불러오지 못했어요. 새로고침해 주세요.';return;}
+
+let renderer;try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});}catch(e){$('loading').textContent='이 기기에서는 3D를 켤 수 없어요.';return;}
+renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));renderer.outputEncoding=THREE.sRGBEncoding;
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;stage.prepend(renderer.domElement);
+
+const scene=new THREE.Scene();
+scene.fog=new THREE.Fog(0xd8f0ea,26,60);
+const camera=new THREE.PerspectiveCamera(30,16/9,0.1,200);
+scene.add(new THREE.HemisphereLight(0xffffff,0x9fbf8a,0.9));
+const sun=new THREE.DirectionalLight(0xffffff,0.9);sun.position.set(6,12,8);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);
+Object.assign(sun.shadow.camera,{left:-8,right:8,top:8,bottom:-8,near:1,far:40});scene.add(sun);
+const ground=new THREE.Mesh(new THREE.CircleGeometry(60,48),new THREE.MeshStandardMaterial({color:0x8fcf6a,roughness:1}));ground.rotation.x=-Math.PI/2;ground.position.y=-0.01;ground.receiveShadow=true;scene.add(ground);
+const spinner=new THREE.Group();scene.add(spinner);
+const rig=new THREE.Group();spinner.add(rig);
+
+const loader=new THREE.GLTFLoader(), cache={};
+function load(path){ if(!cache[path]) cache[path]=new Promise((ok,no)=>loader.load(path,ok,undefined,no)); return cache[path]; }
+function shadows(o){o.traverse(m=>{if(m.isMesh){m.castShadow=true;m.receiveShadow=true;}});}
+
+/* ---- block-style fashion, sized from the animal's own bounds (face = +z) ---- */
+const MAT={};const mat=c=>MAT[c]||(MAT[c]=new THREE.MeshStandardMaterial({color:c,roughness:0.6}));
+function blk(g,w,h,d,c,x,y,z,rx=0,ry=0,rz=0){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(c));m.position.set(x,y,z);m.rotation.set(rx,ry,rz);m.castShadow=true;g.add(m);return m;}
+function wear(kind,b){
+  const g=new THREE.Group(), W=b.max.x-b.min.x, H=b.max.y-b.min.y, D=b.max.z-b.min.z, top=b.max.y, front=b.max.z, cx=(b.min.x+b.max.x)/2, cz=(b.min.z+b.max.z)/2, eye=b.min.y+H*0.62;
+  if(kind==='helmet'){blk(g,W*1.04,H*0.26,D*1.04,'#e8483b',cx,top-H*0.1,cz);blk(g,W*0.2,H*0.27,D*1.05,'#ffffff',cx,top-H*0.1,cz);blk(g,W*0.9,H*0.05,D*0.25,'#2b2622',cx,top-H*0.2,front+D*0.08,0.25);}
+  if(kind==='shades'){blk(g,W*0.36,H*0.13,0.06,'#1a1a1a',cx-W*0.2,eye,front+0.03);blk(g,W*0.36,H*0.13,0.06,'#1a1a1a',cx+W*0.2,eye,front+0.03);blk(g,W*0.95,0.04,0.05,'#1a1a1a',cx,eye+H*0.05,front+0.03);}
+  if(kind==='goggles'){blk(g,W*1.03,H*0.07,D*1.03,'#7a4a24',cx,eye+H*0.02,cz);for(const s of [-1,1]){blk(g,W*0.32,H*0.17,0.12,'#a8743f',cx+s*W*0.21,eye+H*0.02,front+0.05);blk(g,W*0.24,H*0.11,0.04,'#7fd3ff',cx+s*W*0.21,eye+H*0.02,front+0.11);}
+    const sc=blk(g,W*0.5,H*0.08,D*0.4,'#e8483b',cx-W*0.3,b.min.y+H*0.08,b.min.z-D*0.1,0,0.3,0.4);}
+  if(kind==='crown'){blk(g,W*0.6,H*0.08,D*0.6,'#f2c230',cx,top+H*0.04,cz);for(const [x,z] of [[-1,-1],[1,-1],[-1,1],[1,1],[0,1],[0,-1]]) blk(g,W*0.1,H*0.12,W*0.1,'#f2c230',cx+x*W*0.25,top+H*0.13,cz+z*D*0.25);blk(g,W*0.1,W*0.1,W*0.05,'#ff4f8a',cx,top+H*0.06,cz+D*0.31);}
+  if(kind==='party'){const cone=new THREE.Mesh(new THREE.ConeGeometry(W*0.18,H*0.45,4),mat('#7a5af0'));cone.position.set(cx+W*0.12,top+H*0.2,cz);cone.rotation.set(0,Math.PI/4,-0.25);cone.castShadow=true;g.add(cone);
+    blk(g,W*0.1,W*0.1,W*0.1,'#ffc83d',cx+W*0.18,top+H*0.43,cz);}
+  return g;
+}
+
+/* ---- current build ---- */
+const sel={animal:'cat',ride:'vehicle-truck-yellow',wear:'goggles',move:'idle'};
+let car=null, pet=null, petBox=null, hat=null, mixer=null, clips=[], wheels=[];
+const SEAT={truck:{y:0.78,z:-0.15,s:0.74},moto:{y:0.78,z:-0.3,s:0.66}};
+async function rebuild(){
+  const [cg,ag]=await Promise.all([load('assets/racing/'+sel.ride+'.json'),load('assets/pets/animal-'+sel.animal+'.json')]);
+  while(rig.children.length) rig.remove(rig.children[0]);
+  car=cg.scene.clone(true);shadows(car);rig.add(car);
+  wheels=[];car.traverse(o=>{if(/^wheel/.test(o.name))wheels.push(o);});
+  pet=THREE.SkeletonUtils?THREE.SkeletonUtils.clone(ag.scene):ag.scene.clone(true);shadows(pet);
+  const seat=SEAT[sel.ride==='vehicle-motorcycle'?'moto':'truck'];
+  pet.updateMatrixWorld(true); petBox=new THREE.Box3().setFromObject(pet); // measured unrotated, before it joins the turntable
+  pet.scale.setScalar(seat.s);pet.position.set(0,seat.y,seat.z);rig.add(pet);
+  mixer=new THREE.AnimationMixer(pet);clips=ag.animations;playMove();
+  setWear();
+  $('tag').textContent=label(ANIMALS,sel.animal)+' · '+label(RIDES,sel.ride);
+  $('loading').hidden=true;
+}
+function setWear(){ if(hat){pet.remove(hat);hat=null;} if(sel.wear!=='none'){hat=wear(sel.wear,petBox);pet.add(hat);} }
+function playMove(){ if(!mixer) return; mixer.stopAllAction(); const c=THREE.AnimationClip.findByName(clips,sel.move)||THREE.AnimationClip.findByName(clips,'idle'); if(c) mixer.clipAction(c).play(); }
+const label=(list,id)=>list.find(x=>x[0]===id)[1];
+
+/* ---- track tiles and scenery around the stage (static) ---- */
+(async()=>{
+  try{
+    const deco=[['track-straight',[0,0,0],0],['track-straight',[0,0,-10],0],['track-finish',[0,0,10],0],['decoration-forest',[-11,0,-4],0],['decoration-tents',[11,0,2],Math.PI/2],['decoration-forest',[12,0,-9],Math.PI],['decoration-empty',[-11,0,7],0]];
+    for(const [n,p,r] of deco){const g=await load('assets/racing/'+n+'.json');const o=g.scene.clone(true);shadows(o);o.position.set(...p);o.rotation.y=r;scene.add(o);}
+  }catch(e){}
+})();
+
+/* ---- smoke puffs from the kit's own sprite ---- */
+const smokeTex=new THREE.TextureLoader().load('assets/racing/smoke.png');smokeTex.encoding=THREE.sRGBEncoding;
+const puffs=[];
+function puff(n,tint){
+  if(!car) return; rig.updateMatrixWorld(true);
+  const back=new THREE.Vector3(0,0,-1).transformDirection(rig.matrixWorld);
+  for(let i=0;i<n;i++){
+    const m=new THREE.Sprite(new THREE.SpriteMaterial({map:smokeTex,color:tint,transparent:true,depthWrite:false}));
+    const p=new THREE.Vector3((Math.random()-.5)*0.6,0.35,-1.3).applyMatrix4(rig.matrixWorld);m.position.copy(p);
+    const v=back.clone().multiplyScalar(2+Math.random()*2).add(new THREE.Vector3((Math.random()-.5)*1.2,0.6+Math.random(),(Math.random()-.5)*1.2));
+    scene.add(m);puffs.push({m,v,life:0,max:0.8+Math.random()*0.6,delay:i*0.02});
+  }
+}
+
+/* ---- UI ---- */
+function chips(el,list,key,after){
+  $(el).innerHTML=list.map(([id,name])=>`<button class="chip" data-id="${id}" aria-pressed="${sel[key]===id}">${name}</button>`).join('');
+  $(el).addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;sel[key]=b.dataset.id;
+    $(el).querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',String(c===b)));after();});
+}
+chips('cAnimal',ANIMALS,'animal',rebuild);chips('cRide',RIDES,'ride',rebuild);chips('cWear',WEARS,'wear',()=>pet&&setWear());chips('cMove',MOVES,'move',playMove);
+const st={auto:!matchMedia('(prefers-reduced-motion: reduce)').matches,angle:0.7,game:false,boostT:-1,jumpT:-1,landT:-1,drag:null,idle:0};
+$('aSpin').setAttribute('aria-pressed',String(st.auto));
+$('aBoost').onclick=()=>{st.boostT=0;puff(18,0xd6f08a);};
+$('aJump').onclick=()=>{if(st.jumpT<0)st.jumpT=0;};
+$('aGame').onclick=()=>{st.game=!st.game;$('aGame').setAttribute('aria-pressed',String(st.game));setCam();};
+$('aSpin').onclick=()=>{st.auto=!st.auto;$('aSpin').setAttribute('aria-pressed',String(st.auto));};
+stage.addEventListener('pointerdown',e=>{st.drag={x:e.clientX,a:st.angle};try{stage.setPointerCapture(e.pointerId);}catch(_){}});
+stage.addEventListener('pointermove',e=>{if(!st.drag)return;st.angle=st.drag.a+(e.clientX-st.drag.x)*0.012;st.idle=0;});
+const end=()=>{st.drag=null;};stage.addEventListener('pointerup',end);stage.addEventListener('pointercancel',end);
+function setCam(){ if(st.game){camera.fov=22;camera.position.set(0,26,17);camera.lookAt(0,0.4,0);} else {camera.fov=30;camera.position.set(0,3.4,7.4);camera.lookAt(0,1.0,0);} camera.updateProjectionMatrix(); }
+function resize(){const r=stage.getBoundingClientRect();renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix();}
+new ResizeObserver(resize).observe(stage);setCam();
+
+let last=performance.now();
+function tick(now){
+  const dt=Math.min(0.05,(now-last)/1000);last=now;
+  if(!st.drag){st.idle+=dt;if(st.auto&&st.idle>1.2)st.angle+=dt*0.4;}
+  spinner.rotation.y=st.angle;
+  let ws=4,y=0,nose=0,fwd=0,sq=1;
+  if(st.boostT>=0){st.boostT+=dt;ws=18;nose=st.boostT<0.5?Math.sin(st.boostT/0.5*Math.PI)*0.08:0;fwd=st.boostT<0.6?Math.sin(st.boostT/0.6*Math.PI)*0.5:0;if(st.boostT<0.5&&Math.random()<0.5)puff(1,0xd6f08a);if(st.boostT>0.9)st.boostT=-1;}
+  if(st.jumpT>=0){st.jumpT+=dt;const k=st.jumpT/0.8;if(k<1){y=Math.sin(k*Math.PI)*1.4;nose=(0.5-k)*0.3;}else{st.jumpT=-1;st.landT=0;puff(10,0xffffff);}}
+  if(st.landT>=0){st.landT+=dt;sq=1-Math.exp(-st.landT*6)*Math.cos(st.landT*22)*0.12;if(st.landT>0.8)st.landT=-1;}
+  rig.position.set(0,y,fwd);rig.rotation.x=-nose;rig.scale.set(1+(1-sq)*0.5,sq,1+(1-sq)*0.5);
+  for(const w of wheels) w.rotation.x+=ws*dt;
+  if(mixer) mixer.update(dt);
+  for(let i=puffs.length-1;i>=0;i--){const p=puffs[i];if(p.delay>0){p.delay-=dt;p.m.visible=false;continue;}p.m.visible=true;
+    p.life+=dt;const k=p.life/p.max;if(k>=1){scene.remove(p.m);p.m.material.dispose();puffs.splice(i,1);continue;}
+    p.v.multiplyScalar(1-1.5*dt);p.m.position.addScaledVector(p.v,dt);p.m.scale.setScalar(0.4+k*1.4);p.m.material.opacity=1-k;}
+  renderer.render(scene,camera);requestAnimationFrame(tick);
+}
+rebuild().catch(()=>{$('loading').textContent='모델을 불러오지 못했어요. 새로고침해 주세요.';});
+requestAnimationFrame(tick);
+})();
+</script>

@@ -10,3 +10,4 @@
 | `concepts/v2-duck-cat-racers-3d.html` | 캐릭터 시안 v2: 머리 큰 오리 4종·고양이 4종과 생활용품 탈것 3D 쇼룸 |
 
 3D 쇼룸은 cdnjs의 three.js r128을 불러오므로 인터넷 연결이 필요해요.
+| `concepts/v3-kit/index.html` | 시안 v3: Kenney Cube Pets 동물 + Starter Kit Racing 차량·트랙 조합 쇼룸 (모델은 glTF JSON으로 변환해 `assets/`에 포함, CC0) |
