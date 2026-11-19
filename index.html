@@ -77,13 +77,13 @@
 
     <!-- Mobile Menu Overlay -->
     <div id="mobile-menu-overlay" class="fixed inset-0 z-[60] bg-black bg-opacity-95 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
-        <button id="mobile-menu-close" class="absolute top-6 right-6 text-white text-2xl p-4"><i class="fa-solid fa-xmark"></i></button>
+        <button id="mobile-menu-close" class="absolute top-6 right-6 text-white text-2xl p-4" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
         <div class="flex flex-col space-y-8 text-center text-2xl font-bold text-gray-400">
             <a href="publishing.html" class="hover:text-white transition-colors mobile-link">Publishing</a>
             <a href="artwork.html" class="hover:text-white transition-colors mobile-link">Album & Artwork</a>
             <a href="architecture.html" class="hover:text-white transition-colors mobile-link">Architecture</a>
+            <a href="https://games.papertainer.com" class="hover:text-white transition-colors mobile-link inline-flex items-center justify-center gap-2">Games <span class="text-[10px] font-bold tracking-widest leading-none text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-1 align-middle">BETA</span></a>
             <a href="contact.html" class="hover:text-white transition-colors mobile-link">Contact</a>
-            <a href="https://games.papertainer.com" class="hover:text-white transition-colors mobile-link">Games</a>
         </div>
     </div>
 
@@ -100,11 +100,11 @@
                 <a href="publishing.html" class="hover:text-white transition-colors">Publishing</a>
                 <a href="artwork.html" class="hover:text-white transition-colors">Album & Artwork</a>
                 <a href="architecture.html" class="hover:text-white transition-colors">Architecture</a>
+                <a href="https://games.papertainer.com" class="hover:text-white transition-colors inline-flex items-center justify-center gap-1.5">Games <span class="text-[9px] font-bold tracking-widest leading-none text-white/80 bg-white/10 border border-white/20 rounded-full px-1.5 py-1">BETA</span></a>
                 <a href="contact.html" class="hover:text-white transition-colors">Contact</a>
-                <a href="https://games.papertainer.com" class="hover:text-white transition-colors">Games</a>
             </div>
 
-            <button id="mobile-menu-btn" class="md:hidden text-white p-2">
+            <button id="mobile-menu-btn" class="md:hidden text-white p-2" aria-label="Open menu" aria-controls="mobile-menu-overlay" aria-expanded="false">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
         </div>
@@ -158,7 +158,7 @@
                 
                 <!-- Publishing -->
                 <a href="publishing.html" class="group md:col-span-2 relative rounded-3xl overflow-hidden bg-gray-900 border border-gray-800 cursor-pointer">
-                    <img src="https://www.papertainer.com/ebook_01.png" alt="Publishing" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1544256718-3bcf237f3974?q=80&w=2671&auto=format&fit=crop'">
+                    <img src="ebook_01.png" alt="Publishing" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1544256718-3bcf237f3974?q=80&w=2671&auto=format&fit=crop'">
                     <div class="absolute bottom-0 left-0 p-10 w-full bg-gradient-to-t from-black via-black/80 to-transparent">
                         <span class="text-white bg-white/10 backdrop-blur border border-white/10 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-4 inline-block">Core Identity</span>
                         <h3 class="text-3xl font-bold text-white mb-2">Editorial & Publishing</h3>
@@ -168,7 +168,7 @@
 
                 <!-- Album & Artwork -->
                 <a href="artwork.html" class="group relative rounded-3xl overflow-hidden bg-gray-900 border border-gray-800 cursor-pointer">
-                    <img src="https://thinktainer-collab.github.io/papertainer/album_01.jpeg" alt="Album Art" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" onerror="this.src='https://raw.githubusercontent.com/thinktainer-collab/papertainer/main/album_01.jpeg'">
+                    <img src="album_01.jpeg" alt="Album Art" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" onerror="this.src='https://raw.githubusercontent.com/thinktainer-collab/papertainer/main/album_01.jpeg'">
                     <div class="absolute top-0 left-0 p-8 w-full">
                         <span class="text-purple-400 text-[10px] font-bold uppercase tracking-widest mb-2 block">Visual Arts</span>
                         <h3 class="text-2xl font-bold text-white">Album & Artwork</h3>
@@ -177,7 +177,7 @@
 
                 <!-- Architecture -->
                 <a href="architecture.html" class="group md:col-span-3 relative rounded-3xl overflow-hidden bg-gray-900 border border-gray-800 cursor-pointer">
-                    <img src="https://www.papertainer.com/architecture_01.jpg" alt="Space" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1449824913929-49aa711563b1?q=80&w=2670&auto=format&fit=crop'">
+                    <img src="architecture_01.jpg" alt="Space" class="hover-zoom-img w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1449824913929-49aa711563b1?q=80&w=2670&auto=format&fit=crop'">
                     <div class="absolute bottom-0 left-0 p-10 w-full bg-gradient-to-t from-black via-black/80 to-transparent">
                         <span class="text-yellow-500 text-[10px] font-bold uppercase tracking-widest mb-4 inline-block">Spatial Design</span>
                         <h3 class="text-3xl font-bold text-white mb-2">Architecture & Space</h3>
@@ -192,7 +192,8 @@
     <!-- Footer -->
     <footer class="bg-black py-16 border-t border-gray-800 text-xs text-gray-500">
         <div class="max-w-screen-xl mx-auto px-6 text-center">
-            <p>Copyright © 2025 PAPERTAINER.COM All rights reserved.</p>
+            <p class="mb-3"><a href="https://games.papertainer.com" class="hover:text-white transition-colors">Papertainer Games (Beta)</a></p>
+            <p>Copyright © 2026 PAPERTAINER.COM All rights reserved.</p>
         </div>
     </footer>
 
@@ -211,16 +212,19 @@
                 mobileMenu.classList.remove('opacity-100', 'pointer-events-auto');
                 mobileMenu.classList.add('opacity-0', 'pointer-events-none');
                 document.body.style.overflow = 'auto';
+                if (mobileBtn) mobileBtn.setAttribute('aria-expanded', 'false');
             } else {
                 mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
                 mobileMenu.classList.add('opacity-100', 'pointer-events-auto');
                 document.body.style.overflow = 'hidden';
+                if (mobileBtn) mobileBtn.setAttribute('aria-expanded', 'true');
             }
         }
 
         if(mobileBtn) mobileBtn.addEventListener('click', toggleMenu);
         if(mobileClose) mobileClose.addEventListener('click', toggleMenu);
         mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && mobileMenu.classList.contains('pointer-events-auto')) toggleMenu(); });
 
         // Hero Anim
         const tlHero = gsap.timeline();

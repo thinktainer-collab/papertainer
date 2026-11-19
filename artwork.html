@@ -125,15 +125,15 @@
 
     <!-- Mobile Menu Overlay -->
     <div id="mobile-menu-overlay" class="fixed inset-0 z-[60] bg-black bg-opacity-95 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
-        <button id="mobile-menu-close" class="absolute top-6 right-6 text-white text-2xl p-4">
+        <button id="mobile-menu-close" class="absolute top-6 right-6 text-white text-2xl p-4" aria-label="Close menu">
             <i class="fa-solid fa-xmark"></i>
         </button>
         <div class="flex flex-col space-y-8 text-center text-2xl font-bold text-gray-400">
             <a href="publishing.html" class="hover:text-white transition-colors mobile-link">Publishing</a>
             <a href="artwork.html" class="text-white mobile-link">Album & Artwork</a>
             <a href="architecture.html" class="hover:text-white transition-colors mobile-link">Architecture</a>
+            <a href="https://games.papertainer.com" class="hover:text-white transition-colors mobile-link inline-flex items-center justify-center gap-2">Games <span class="text-[10px] font-bold tracking-widest leading-none text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-1 align-middle">BETA</span></a>
             <a href="contact.html" class="hover:text-white transition-colors mobile-link">Contact</a>
-            <a href="https://games.papertainer.com" class="hover:text-white transition-colors mobile-link">Games</a>
         </div>
     </div>
 
@@ -149,11 +149,11 @@
                 <a href="publishing.html" class="hover:text-white transition-colors">Publishing</a>
                 <a href="artwork.html" class="text-white">Album & Artwork</a>
                 <a href="architecture.html" class="hover:text-white transition-colors">Architecture</a>
+                <a href="https://games.papertainer.com" class="hover:text-white transition-colors inline-flex items-center justify-center gap-1.5">Games <span class="text-[9px] font-bold tracking-widest leading-none text-white/80 bg-white/10 border border-white/20 rounded-full px-1.5 py-1">BETA</span></a>
                 <a href="contact.html" class="hover:text-white transition-colors">Contact</a>
-                <a href="https://games.papertainer.com" class="hover:text-white transition-colors">Games</a>
             </div>
 
-            <button id="mobile-menu-btn" class="md:hidden text-white p-2">
+            <button id="mobile-menu-btn" class="md:hidden text-white p-2" aria-label="Open menu" aria-controls="mobile-menu-overlay" aria-expanded="false">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
         </div>
@@ -178,7 +178,7 @@
             <div class="flex justify-center md:justify-end animate-fade-up cursor-pointer">
                 <div class="album-container group">
                     <!-- Album Art 1 -->
-                    <img src="https://thinktainer-collab.github.io/papertainer/album_01.jpeg" alt="scoke Album Cover" class="album-cover" onerror="this.src='https://raw.githubusercontent.com/thinktainer-collab/papertainer/main/album_01.jpeg'">
+                    <img src="album_01.jpeg" alt="scoke Album Cover" class="album-cover" onerror="this.src='https://raw.githubusercontent.com/thinktainer-collab/papertainer/main/album_01.jpeg'">
                     <div class="vinyl-record"></div>
                 </div>
             </div>
@@ -256,7 +256,7 @@
             <div class="order-1 md:order-2 flex justify-center md:justify-start animate-fade-up cursor-pointer" style="animation-delay: 0.2s;">
                 <div class="album-container group">
                     <!-- Album Art 2 -->
-                    <img src="https://thinktainer-collab.github.io/papertainer/album_02.jpeg" alt="Sokdak Sokdak Album Cover" class="album-cover" onerror="this.src='https://raw.githubusercontent.com/thinktainer-collab/papertainer/main/album_02.jpeg'">
+                    <img src="album_02.jpeg" alt="Sokdak Sokdak Album Cover" class="album-cover" onerror="this.src='https://raw.githubusercontent.com/thinktainer-collab/papertainer/main/album_02.jpeg'">
                     <div class="vinyl-record"></div>
                 </div>
             </div>
@@ -266,7 +266,8 @@
     <!-- Footer -->
     <footer class="bg-black py-16 border-t border-gray-800 text-xs text-gray-500">
         <div class="max-w-screen-xl mx-auto px-6 text-center">
-            <p>Copyright © 2025 PAPERTAINER.COM All rights reserved.</p>
+            <p class="mb-3"><a href="https://games.papertainer.com" class="hover:text-white transition-colors">Papertainer Games (Beta)</a></p>
+            <p>Copyright © 2026 PAPERTAINER.COM All rights reserved.</p>
         </div>
     </footer>
 
@@ -285,16 +286,19 @@
                 mobileMenu.classList.remove('opacity-100', 'pointer-events-auto');
                 mobileMenu.classList.add('opacity-0', 'pointer-events-none');
                 document.body.style.overflow = 'auto';
+                if (mobileBtn) mobileBtn.setAttribute('aria-expanded', 'false');
             } else {
                 mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
                 mobileMenu.classList.add('opacity-100', 'pointer-events-auto');
                 document.body.style.overflow = 'hidden';
+                if (mobileBtn) mobileBtn.setAttribute('aria-expanded', 'true');
             }
         }
 
         if(mobileBtn) mobileBtn.addEventListener('click', toggleMenu);
         if(mobileClose) mobileClose.addEventListener('click', toggleMenu);
         mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && mobileMenu.classList.contains('pointer-events-auto')) toggleMenu(); });
 
         // Fade Up Animation
         const fadeUps = document.querySelectorAll('.animate-fade-up');

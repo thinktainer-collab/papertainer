@@ -42,13 +42,13 @@
 
     <!-- Mobile Menu Overlay -->
     <div id="mobile-menu-overlay" class="fixed inset-0 z-[60] bg-black bg-opacity-95 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
-        <button id="mobile-menu-close" class="absolute top-6 right-6 text-white text-2xl p-4"><i class="fa-solid fa-xmark"></i></button>
+        <button id="mobile-menu-close" class="absolute top-6 right-6 text-white text-2xl p-4" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
         <div class="flex flex-col space-y-8 text-center text-2xl font-bold text-gray-400">
             <a href="publishing.html" class="text-white mobile-link">Publishing</a>
             <a href="artwork.html" class="hover:text-white transition-colors mobile-link">Album & Artwork</a>
             <a href="architecture.html" class="hover:text-white transition-colors mobile-link">Architecture</a>
+            <a href="https://games.papertainer.com" class="hover:text-white transition-colors mobile-link inline-flex items-center justify-center gap-2">Games <span class="text-[10px] font-bold tracking-widest leading-none text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-1 align-middle">BETA</span></a>
             <a href="contact.html" class="hover:text-white transition-colors mobile-link">Contact</a>
-            <a href="https://games.papertainer.com" class="hover:text-white transition-colors mobile-link">Games</a>
         </div>
     </div>
 
@@ -63,10 +63,10 @@
                 <a href="publishing.html" class="text-white">Publishing</a>
                 <a href="artwork.html" class="hover:text-white transition-colors">Album & Artwork</a>
                 <a href="architecture.html" class="hover:text-white transition-colors">Architecture</a>
+                <a href="https://games.papertainer.com" class="hover:text-white transition-colors inline-flex items-center justify-center gap-1.5">Games <span class="text-[9px] font-bold tracking-widest leading-none text-white/80 bg-white/10 border border-white/20 rounded-full px-1.5 py-1">BETA</span></a>
                 <a href="contact.html" class="hover:text-white transition-colors">Contact</a>
-                <a href="https://games.papertainer.com" class="hover:text-white transition-colors">Games</a>
             </div>
-            <button id="mobile-menu-btn" class="md:hidden text-white p-2"><i class="fa-solid fa-bars text-xl"></i></button>
+            <button id="mobile-menu-btn" class="md:hidden text-white p-2" aria-label="Open menu" aria-controls="mobile-menu-overlay" aria-expanded="false"><i class="fa-solid fa-bars text-xl"></i></button>
         </div>
     </nav>
 
@@ -99,7 +99,7 @@
             <!-- Right: Image -->
             <div class="order-1 md:order-2 flex justify-center perspective-container opacity-0 translate-y-10 animate-fade-up" style="animation-delay: 0.4s;">
                 <div class="relative w-full max-w-md aspect-[3/4] group">
-                    <img src="https://www.papertainer.com/ebook_01.png" alt="Cover" class="book-hero-img w-full h-full shadow-2xl rounded-lg object-cover cursor-pointer border border-white/10" onerror="this.src='https://images.unsplash.com/photo-1535131749006-b7f58c99034b?q=80&w=1600&auto=format&fit=crop'">
+                    <img src="ebook_01.png" alt="Cover" class="book-hero-img w-full h-full shadow-2xl rounded-lg object-cover cursor-pointer border border-white/10" onerror="this.src='https://images.unsplash.com/photo-1535131749006-b7f58c99034b?q=80&w=1600&auto=format&fit=crop'">
                     <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur px-3 py-1 rounded-full text-[10px] text-gray-300 border border-white/10">Available on Kindle</div>
                 </div>
             </div>
@@ -114,11 +114,11 @@
         </div>
         <div class="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="overflow-hidden rounded-2xl group relative h-[400px]">
-                <img src="https://www.papertainer.com/ebook_01s.png" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Kinematic" onerror="this.src='https://images.unsplash.com/photo-1593111774240-d529f12db4bb?q=80&w=1600&auto=format&fit=crop'">
+                <img src="ebook_01s.png" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Kinematic" onerror="this.src='https://images.unsplash.com/photo-1593111774240-d529f12db4bb?q=80&w=1600&auto=format&fit=crop'">
                 <div class="absolute bottom-0 left-0 p-6 bg-gradient-to-t from-black/60 to-transparent w-full"><span class="text-white font-medium">Kinematic Sequence</span></div>
             </div>
             <div class="overflow-hidden rounded-2xl group relative h-[400px]">
-                <img src="https://www.papertainer.com/ebook_01a.png" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Muscle" onerror="this.src='https://images.unsplash.com/photo-1576670159805-381a9634b595?q=80&w=1600&auto=format&fit=crop'">
+                <img src="ebook_01a.png" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Muscle" onerror="this.src='https://images.unsplash.com/photo-1576670159805-381a9634b595?q=80&w=1600&auto=format&fit=crop'">
                 <div class="absolute bottom-0 left-0 p-6 bg-gradient-to-t from-black/60 to-transparent w-full"><span class="text-white font-medium">Muscle Activation</span></div>
             </div>
         </div>
@@ -127,7 +127,8 @@
     <!-- Footer -->
     <footer class="bg-black py-16 border-t border-gray-800 text-xs text-gray-500">
         <div class="max-w-screen-xl mx-auto px-6 text-center">
-            <p>Copyright © 2025 PAPERTAINER.COM All rights reserved.</p>
+            <p class="mb-3"><a href="https://games.papertainer.com" class="hover:text-white transition-colors">Papertainer Games (Beta)</a></p>
+            <p>Copyright © 2026 PAPERTAINER.COM All rights reserved.</p>
         </div>
     </footer>
 
@@ -145,15 +146,18 @@
                 mobileMenu.classList.remove('opacity-100', 'pointer-events-auto');
                 mobileMenu.classList.add('opacity-0', 'pointer-events-none');
                 document.body.style.overflow = 'auto';
+                if (mobileBtn) mobileBtn.setAttribute('aria-expanded', 'false');
             } else {
                 mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
                 mobileMenu.classList.add('opacity-100', 'pointer-events-auto');
                 document.body.style.overflow = 'hidden';
+                if (mobileBtn) mobileBtn.setAttribute('aria-expanded', 'true');
             }
         }
         if(mobileBtn) mobileBtn.addEventListener('click', toggleMenu);
         if(mobileClose) mobileClose.addEventListener('click', toggleMenu);
         mobileLinks.forEach(l => l.addEventListener('click', toggleMenu));
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && mobileMenu.classList.contains('pointer-events-auto')) toggleMenu(); });
 
         // Fade Up
         const fadeUps = document.querySelectorAll('.animate-fade-up');
