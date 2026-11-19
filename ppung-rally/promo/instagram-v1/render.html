@@ -1,0 +1,133 @@
+<!doctype html><meta charset="utf-8"><body style="margin:0;background:#222">
+<script src="three.min.js"></script><script src="racer3d.js"></script>
+<script>
+const W=1080,H=1350,PI=Math.PI;
+const DUCK={duck:'#ffd93b',wing:'#f0b400',head:'#ffd93b',deck:'#2fa3c9',deck2:'#2286a8',panel:'#f4f1ea',wheel:'#ff8fb1',wheel2:'#ff5a8a'};
+const HEN ={duck:'#fff8ea',wing:'#efe4cc',head:'#fff8ea',deck:'#e8483b',deck2:'#b83228',panel:'#f4f1ea',wheel:'#ffc83d',wheel2:'#e0a020'};
+const lin=c=>new THREE.Color(c).convertSRGBToLinear();
+const M=(c,o={})=>{const m=new THREE.MeshStandardMaterial(Object.assign({roughness:0.8,flatShading:true},o));m.color=lin(c);if(o.emissive)m.emissive=lin(o.emissive);return m;};
+function box(w,h,d,c,x,y,z,o){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),M(c,o));m.position.set(x,y,z);m.castShadow=m.receiveShadow=true;return m;}
+function rng(s){return()=>{s^=s<<13;s>>>=0;s^=s>>17;s^=s<<5;s>>>=0;return s/4294967296;};}
+
+/* shared world: grass, a dirt race road along Z (or X), curbs, tyre stacks, a grandstand with fans */
+function world(scene,{alongX=false,stands=true}={}){
+  const R=rng(7);
+  scene.add(new THREE.HemisphereLight(0xffffff,0x7a8a5a,0.75));
+  const sun=new THREE.DirectionalLight(0xfff2dc,1.0);sun.position.set(-8,16,10);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+  Object.assign(sun.shadow.camera,{left:-14,right:14,top:14,bottom:-14,near:1,far:60});sun.shadow.bias=-0.0006;scene.add(sun);
+  const g=new THREE.Mesh(new THREE.PlaneGeometry(400,400),M('#8fcf6a'));g.rotation.x=-PI/2;g.receiveShadow=true;scene.add(g);
+  const road=new THREE.Group();scene.add(road);if(alongX) road.rotation.y=-PI/2; // stands end up on the far side
+  const r=new THREE.Mesh(new THREE.PlaneGeometry(9,400),M('#cfa56c'));r.rotation.x=-PI/2;r.position.y=0.01;r.receiveShadow=true;road.add(r);
+  for(let k=0;k<160;k++){const m=new THREE.Mesh(new THREE.CircleGeometry(0.15+R()*0.3,6),M(R()<.5?'#b88c55':'#ddb67c'));m.rotation.x=-PI/2;m.position.set((R()-.5)*8.6,0.02,(R()-.5)*120);road.add(m);}
+  for(const s of [-1,1]){
+    for(let z=-120;z<40;z+=1.4){road.add(box(0.6,0.12,1.4,(Math.round(z/1.4)%2)?'#e8483b':'#f4f1ea',s*4.8,0.06,z));}
+    for(let z=-120;z<40;z+=2.2){for(let k=0;k<2;k++){const t=new THREE.Mesh(new THREE.CylinderGeometry(0.42,0.42,0.34,10),M(k?((Math.round(z/2.2)%2)?'#f4f1ea':'#e8483b'):'#2a2624'));t.position.set(s*5.6,0.17+k*0.34,z);t.castShadow=true;road.add(t);}}
+  }
+  if(stands){const st=new THREE.Group();road.add(st);
+    const cols=['#e8483b','#3a8ee8','#ffcf2e','#f4efe6','#4fbf5a','#c46ad8','#ff8a3d'];
+    for(let row=0;row<4;row++){st.add(box(4,0.7,170,row%2?'#b3b6d0':'#c8cbe0',-9-row*1.6,0.35+row*0.7,-40));
+      for(let z=-120;z<40;z+=0.75){const c=cols[(R()*cols.length)|0];const p=box(0.42,0.6,0.36,c,-9-row*1.6+(R()-.5)*0.4,0.75+row*0.7+0.3+R()*0.15,z);p.castShadow=false;st.add(p);
+        const h=box(0.34,0.32,0.32,R()<.5?'#e9c6a1':'#c8946a',p.position.x,p.position.y+0.46,z);h.castShadow=false;st.add(h);
+        if(R()<0.35){const a=box(0.07,0.42,0.07,'#e9c6a1',p.position.x,p.position.y+0.5,z+0.24);a.rotation.x=-0.4;a.castShadow=false;st.add(a);}}}
+    for(let z=-110;z<40;z+=9){const flag=box(0.06,3,0.06,'#e6e9f2',-7.2,1.5,z);st.add(flag);st.add(box(0.05,0.7,1.2,(z/9|0)%2?'#ffcf2e':'#e8483b',-7.2,2.7,z+0.6));}
+  }
+  for(let k=0;k<18;k++){const x=(R()<.5?-1:1)*(16+R()*30),z=-20-R()*120;const t=new THREE.Group();t.position.set(x,0,z);
+    t.add(box(0.4,1.4,0.4,'#a0673a',0,0.7,0));for(const [y,rr] of [[2,1.6],[3,1.2],[3.9,0.8]]){const c=new THREE.Mesh(new THREE.ConeGeometry(rr,1.6,7),M('#3e9a5a'));c.position.y=y;c.castShadow=true;t.add(c);}scene.add(t);}
+}
+/* boost effects */
+function fartCloud(scene,at,dir,n,color,seed,size=1){const R=rng(seed);for(let i=0;i<n;i++){const k=i/n;const r=(0.35+k*1.1+R()*0.3)*size;
+  const m=new THREE.Mesh(new THREE.IcosahedronGeometry(r,1),M(R()<.5?color:'#d6ea8a',{transparent:true,opacity:0.8-k*0.45}));
+  m.position.set(at.x+dir.x*k*7+(R()-.5)*1.2*k,at.y+dir.y*k*7+(R()-.3)*1.1*k+0.2,at.z+dir.z*k*7+(R()-.5)*1.2*k);scene.add(m);}}
+function flame(scene,at,dir,len){const g=new THREE.Group();for(const [r,l,c] of [[0.34,len,'#ff9a1f'],[0.2,len*0.7,'#ffe680']]){const m=new THREE.Mesh(new THREE.ConeGeometry(r,l,10),M(c,{emissive:c,transparent:true,opacity:0.95}));m.position.y=-l/2;g.add(m);}
+  g.position.copy(at);g.quaternion.setFromUnitVectors(new THREE.Vector3(0,-1,0),dir.clone().normalize());scene.add(g);}
+function streaks(scene,n,box3,dir,seed){const R=rng(seed);for(let i=0;i<n;i++){const L=1.5+R()*4;const m=new THREE.Mesh(new THREE.BoxGeometry(0.05,0.05,L),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.55}));
+  m.position.set(box3[0]+R()*(box3[1]-box3[0]),box3[2]+R()*(box3[3]-box3[2]),box3[4]+R()*(box3[5]-box3[4]));m.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),dir);scene.add(m);}}
+
+const make=makeRacerFactory();
+function racers(){ const d=make(DUCK,false), h=make(HEN,true); return [d,h]; }
+function nozzleWorld(r){ r.car.updateMatrixWorld(true); return new THREE.Vector3(0,2.2,-2.55).applyMatrix4(r.parts.body.matrixWorld); }
+
+/* ---------------- text helpers ---------------- */
+function stroke(g,txt,x,y,size,fill,strokeC,lw,font='BHS',align='center',shadow=true){
+  g.font=`${size}px "${font}"`;g.textAlign=align;g.textBaseline='alphabetic';g.lineJoin='round';
+  if(shadow){g.fillStyle='rgba(0,0,0,.35)';g.fillText(txt,x+size*0.04,y+size*0.08);}
+  if(lw){g.lineWidth=lw;g.strokeStyle=strokeC;g.strokeText(txt,x,y);} g.fillStyle=fill;g.fillText(txt,x,y);}
+function logo(g,x,y,s=1,align='center'){ // "뿡뿡 랠리" two-tone wordmark
+  g.save();g.translate(x,y);g.scale(s,s);
+  const a=align==='center';g.font='170px "BHS"';const w1=g.measureText('뿡뿡 ').width, w2=g.measureText('랠리').width, tot=w1+w2, x0=a?-tot/2:0;
+  stroke(g,'뿡뿡 ',x0,0,170,'#ffcf2e','#2b1d00',22,'BHS','left');stroke(g,'랠리',x0+w1,0,170,'#a9cc4c','#1d2a08',22,'BHS','left');g.restore();}
+function pill(g,txt,x,y,bg,fg,size=34,align='center'){g.font=`${size}px "BHS"`;const w=g.measureText(txt).width+size*1.2,h=size*1.55,x0=align==='center'?x-w/2:x;
+  g.fillStyle=bg;g.beginPath();g.roundRect(x0,y-h/2,w,h,h/2);g.fill();g.fillStyle=fg;g.textAlign='center';g.textBaseline='middle';g.fillText(txt,x0+w/2,y+size*0.05);}
+function cta(g,txt,sub){g.fillStyle='#1b1511';g.fillRect(0,H-150,W,150);g.fillStyle='#ffcf2e';g.fillRect(0,H-150,W,8);
+  g.textAlign='center';g.textBaseline='middle';g.font='54px "BHS"';g.fillStyle='#fff4e2';g.fillText(txt,W/2,H-92);g.font='32px "GD"';g.fillStyle='#ffcf2e';g.fillText(sub,W/2,H-42);}
+
+function render3D(scene,camera){const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});r.setPixelRatio(1);r.setSize(W,H,false);
+  r.outputEncoding=THREE.sRGBEncoding;r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;r.setClearColor(0,0);r.render(scene,camera);return r.domElement;}
+function sky(g,top,bottom){const gr=g.createLinearGradient(0,0,0,H);gr.addColorStop(0,top);gr.addColorStop(0.6,bottom);g.fillStyle=gr;g.fillRect(0,0,W,H);
+  g.fillStyle='rgba(255,255,255,.75)';for(const [x,y,s] of [[150,180,1],[820,120,1.3],[560,260,0.8]]){for(const [dx,dy,r] of [[0,0,50],[55,-18,62],[115,0,48],[60,18,44]]){g.beginPath();g.arc(x+dx*s,y+dy*s,r*s,0,7);g.fill();}}}
+
+/* ---------------- A: cheek to cheek, head-on ---------------- */
+function bannerA(){
+  const scene=new THREE.Scene();scene.fog=new THREE.Fog(0xcfeee6,40,140);world(scene);
+  const [d,h]=racers();
+  d.car.position.set(-1.38,0,0.2);d.car.rotation.y=0.09;h.car.position.set(1.38,0,0);h.car.rotation.y=-0.09;
+  d.parts.head.rotation.z=-0.22;d.parts.head.position.x=0.18;h.parts.head.rotation.z=0.22;h.parts.head.position.x=-0.18;
+  d.parts.body.rotation.x=-0.05;h.parts.body.rotation.x=-0.05;
+  scene.add(d.car,h.car);
+  for(const [r,c,s] of [[d,'#b4cf55',1],[h,'#e3d75a',2]]){const n=nozzleWorld(r);flame(scene,n,new THREE.Vector3(0,0,-1),1.4);fartCloud(scene,n,new THREE.Vector3(r===d?-0.25:0.25,0.05,-1),16,c,s);}
+  streaks(scene,40,[-7,7,0.3,5,-30,-4],new THREE.Vector3(0,0,1),3);
+  const cam=new THREE.PerspectiveCamera(36,W/H,0.1,300);cam.position.set(0,2.35,9.3);cam.lookAt(0,2.05,-0.5);
+  const c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
+  sky(g,'#7ccbe8','#d9f2ef');g.drawImage(render3D(scene,cam),0,0);
+  const vg=g.createRadialGradient(W/2,H*0.55,H*0.3,W/2,H*0.55,H*0.85);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.28)');g.fillStyle=vg;g.fillRect(0,0,W,H);
+  pill(g,'무료 브라우저 레이싱 게임',W/2,90,'#1b1511','#ffcf2e',32);
+  logo(g,W/2,300,1);
+  stroke(g,'볼 맞대고, 뿡!',W/2,1075,118,'#fff4e2','#2b1d00',18);
+  stroke(g,'방귀 한 방이면 역전하는 오리 vs 닭 레이스',W/2,1140,40,'#fff4e2','#2b1d00',9,'GD');
+  cta(g,'지금 무료로 플레이','games.papertainer.com');
+  return c.toDataURL('image/png');
+}
+/* ---------------- B: side-on rivalry with VS ---------------- */
+function bannerB(){
+  const scene=new THREE.Scene();scene.fog=new THREE.Fog(0xcfeee6,30,120);world(scene,{alongX:true,stands:true});
+  const [d,h]=racers();
+  d.car.position.set(1.2,0,1.9);d.car.rotation.y=-PI/2;h.car.position.set(-1.5,0,-1.9);h.car.rotation.y=-PI/2;
+  d.parts.head.rotation.y=-0.35;h.parts.head.rotation.y=0.35;d.parts.body.rotation.x=-0.06;h.parts.body.rotation.x=-0.06;
+  scene.add(d.car,h.car);
+  for(const [r,c,s] of [[d,'#b4cf55',4],[h,'#e3d75a',5]]){const n=nozzleWorld(r);flame(scene,n,new THREE.Vector3(1,0,0),1.6);fartCloud(scene,n,new THREE.Vector3(1,0.06,0),18,c,s);}
+  streaks(scene,50,[2,24,0.3,4.5,-4,4],new THREE.Vector3(1,0,0),6);
+  const cam=new THREE.PerspectiveCamera(36,W/H,0.1,300);cam.position.set(-0.4,3.0,17);cam.lookAt(-0.3,1.7,0);cam.rotateZ(0.06);
+  const c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
+  sky(g,'#ffb35a','#ffe7b0');g.drawImage(render3D(scene,cam),0,0);
+  g.fillStyle='rgba(27,21,17,.55)';g.fillRect(0,0,W,262);
+  stroke(g,'오늘의 라이벌전',W/2,82,56,'#ffcf2e','#2b1d00',10);
+  stroke(g,'닭',250,210,96,'#fff4e2','#2b1d00',14);stroke(g,'오리',830,210,96,'#ffd93b','#2b1d00',14);
+  g.save();g.translate(W/2,178);g.rotate(-0.12);g.fillStyle='#e8483b';g.beginPath();for(let k=0;k<20;k++){const a=k/20*PI*2,r=k%2?70:105;g.lineTo(Math.cos(a)*r,Math.sin(a)*r);}g.closePath();g.fill();
+  g.lineWidth=8;g.strokeStyle='#2b1d00';g.stroke();stroke(g,'VS',0,30,88,'#fff4e2','#2b1d00',12,'BHS','center',false);g.restore();
+  stroke(g,'방귀 한 방이면 역전!',W/2,1110,92,'#fff4e2','#2b1d00',16);
+  logo(g,W/2,1010,0.55);
+  cta(g,'지금 무료로 플레이','games.papertainer.com');
+  return c.toDataURL('image/png');
+}
+/* ---------------- C: both airborne off a ramp, game-like 3/4 view ---------------- */
+function bannerC(){
+  const scene=new THREE.Scene();scene.fog=new THREE.Fog(0xcfeee6,40,140);world(scene);
+  const ramp=new THREE.Mesh(new THREE.BoxGeometry(8.6,0.9,3.2),M('#a8743f'));ramp.position.set(0,0.2,4.5);ramp.rotation.x=-0.28;ramp.castShadow=ramp.receiveShadow=true;scene.add(ramp);
+  for(let k=-2;k<=2;k++){const ch=box(1.2,0.05,0.3,'#ffffff',k*1.7,0.68,4.3);ch.rotation.x=-0.28;scene.add(ch);}
+  const mud=new THREE.Mesh(new THREE.CircleGeometry(1,24),M('#5a3a1e'));mud.rotation.x=-PI/2;mud.scale.set(3.6,2.2,1);mud.position.set(0.3,0.03,-1.5);scene.add(mud);
+  const [d,h]=racers();
+  d.car.position.set(-1.45,2.4,-0.6);d.car.rotation.set(-0.32,0.05,0.05);h.car.position.set(1.45,2.9,-1.4);h.car.rotation.set(-0.38,-0.06,-0.06);
+  d.parts.head.rotation.x=-0.2;h.parts.head.rotation.x=-0.2;d.parts.head.rotation.z=-0.15;h.parts.head.rotation.z=0.15;
+  scene.add(d.car,h.car);
+  for(const [r,c,s] of [[d,'#b4cf55',7],[h,'#e3d75a',8]]){const n=nozzleWorld(r);const dir=new THREE.Vector3(0,-0.25,1).normalize();flame(scene,n,dir,1.5);fartCloud(scene,n,dir,10,c,s,0.55);}
+  const cam=new THREE.PerspectiveCamera(38,W/H,0.1,300);cam.position.set(8.5,10,14.5);cam.lookAt(0,2.3,-0.4);
+  const c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
+  sky(g,'#7ccbe8','#d9f2ef');g.drawImage(render3D(scene,cam),0,0);
+  stroke(g,'누가 더 멀리 날까?',W/2,150,96,'#fff4e2','#2b1d00',16);
+  pill(g,'점프대 · 진흙 · 방귀 부스트',W/2,240,'#ffcf2e','#2b1d00',34);
+  logo(g,W/2,1110,0.75);
+  cta(g,'지금 무료로 플레이','games.papertainer.com');
+  return c.toDataURL('image/png');
+}
+window.ready=(async()=>{for(const [n,f] of [['BHS','fonts/bhs-ko.woff2'],['BHS','fonts/bhs-la.woff2'],['GD','fonts/gd-ko.woff2'],['GD','fonts/gd-la.woff2']]){const ff=new FontFace(n,`url(${f})`);await ff.load();document.fonts.add(ff);}return true;})();
+</script>
