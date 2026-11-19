@@ -13,3 +13,4 @@
 | `concepts/v3-kit/index.html` | 시안 v3: Kenney Cube Pets 동물 + Starter Kit Racing 차량·트랙 조합 쇼룸 (모델은 glTF JSON으로 변환해 `assets/`에 포함, CC0) |
 | `play/index.html` | 버전 비교 허브: `v1.html`(2D 원래 버전), `v2.html`(3D 새 버전), `showroom.html`(키트 쇼룸) |
 | `concepts/v4-super-d/index.html` | 탈것 시안: 스케치 "Flipper-CAR with MAD-duck"을 3D로 옮긴 슈퍼 D 플리퍼카 |
+| `concepts/v5-superd-2d/` | 2D 게임 차 4대를 슈퍼 D 스프라이트(32방향, 3D에서 구워냄)로 바꾼 쇼룸과 테스트 게임 |
