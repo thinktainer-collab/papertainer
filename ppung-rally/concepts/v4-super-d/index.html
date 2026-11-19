@@ -1,4 +1,4 @@
-<title>슈퍼 D 플리퍼카</title>
+<title>슈퍼 D 제트보드</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,15 +61,15 @@ p{margin:0}
 
 <main class="wrap">
   <header style="display:flex;flex-direction:column;gap:8px">
-    <p class="eyebrow">뿡뿡 랠리 · 탈것 시안 · 스케치에서 3D로</p>
-    <h1>슈퍼 D 플리퍼카 <em>× 성난 오리</em></h1>
-    <p class="lede">보내주신 연필 스케치 "Flipper-CAR with MAD-duck"을 3D 버전과 같은 Kenney 로우폴리 스타일로 옮겼어요. 왼쪽 스케치와 오른쪽 모델을 나란히 비교해 보세요.</p>
+    <p class="eyebrow">뿡뿡 랠리 · 탈것 시안 v2 · 스케이트보드 + 제트 엔진</p>
+    <h1>슈퍼 D 제트보드 <em>× 성난 오리</em></h1>
+    <p class="lede">스케치의 성난 오리와 SUPER-D는 그대로 두고, 차체를 커다란 스케이트보드로, 뒤 원뿔을 제트 엔진으로 바꿨어요. 운전자는 보드 위 작은 버킷 시트에 앉아요.</p>
   </header>
 
   <section class="pair" aria-label="스케치와 3D 비교">
     <figure class="sketch">
       <img src="sketch.jpg" alt="연필 스케치: 납작한 차 앞에 화난 오리, 뒤에 조종석과 원뿔, 옆면에 SUPER-D 글자">
-      <figcaption>원본 스케치</figcaption>
+      <figcaption>원본 스케치 (오리와 SUPER-D는 여기서 가져왔어요)</figcaption>
     </figure>
     <div class="stage" id="stage"><div class="loading" id="loading">모델 만드는 중…</div><div class="pop" id="pop">꽉!</div></div>
   </section>
@@ -88,21 +88,22 @@ p{margin:0}
     <div class="box">
       <h2>스케치를 이렇게 읽었어요</h2>
       <ul>
-        <li><b>플리퍼 차체:</b> 길고 납작한 판을 오리발(물갈퀴) 모양으로 잡았어요. 앞이 넓고 둥글며, 위에 물갈퀴 골이 있어요.</li>
+        <li><b>스케이트보드 차체:</b> 앞뒤가 들린 킥테일 보드에 검은 그립 테이프, 나무 단면이 보이는 옆선, 트럭(바퀴 축)과 통통한 우레탄 바퀴를 달았어요.</li>
         <li><b>성난 오리:</b> 앞 갑판에 올라탄 커다란 오리. 찌푸린 눈썹, 머리 위 깃털 두 가닥, 뒤로 뻗친 날개를 넣었어요.</li>
-        <li><b>조종석:</b> 뒤쪽의 비스듬한 덮개 속에 머리가 부스스한 운전자가 앉아 있어요.</li>
-        <li><b>뒤 원뿔:</b> 부스터 노즐로 해석했어요. 부스트하면 불꽃이 나와요.</li>
-        <li><b>SUPER-D:</b> 옆판 글자를 그대로 살렸고, 휠캡의 점 무늬도 넣었어요.</li>
+        <li><b>운전자:</b> 머리가 부스스한 오리가 보드 위 버킷 시트에 앉아 있어요.</li>
+        <li><b>제트 엔진:</b> 뒤쪽 받침대 위에 얹었어요. 앞 흡입구의 팬이 돌고, 부스트하면 노즐에서 불꽃이 길게 나와요.</li>
+        <li><b>SUPER-D:</b> 그립 테이프 위(게임 시점에서 보이게)와 보드 옆면에 넣었어요.</li>
       </ul>
     </div>
     <div class="box">
       <h2>게임 속 작동 아이디어</h2>
       <ul>
         <li><b>꽉! 부스트:</b> 앞의 오리가 목을 쭉 내밀며 부리를 "꽉" 다물어요. 이때 부딪힌 차는 핀볼 플리퍼에 맞은 것처럼 튕겨 나가요.</li>
-        <li><b>물 위 주행:</b> 오리발 차체라 물웅덩이에서는 느려지지 않고 오히려 빨라져요.</li>
+        <li><b>보드 기술:</b> 점프대에서 부스트하면 보드가 한 바퀴 도는 킥플립 점프. 성공하면 콩 보너스.</li>
+        <li><b>제트 과열:</b> 부스트를 연달아 쓰면 엔진이 빨갛게 달아올라 잠깐 쉬어야 해요.</li>
         <li><b>성격:</b> 머리가 무거운 앞쪽 무게중심이라 점프하면 앞으로 고꾸라지듯 착지해요.</li>
       </ul>
-      <p style="color:var(--muted);font-size:14px">궁금한 점: "Flipper"가 오리발(물갈퀴)인지, 핀볼 플리퍼인지, 아니면 뒤집기(flip)인지 알려주세요. 지금은 앞의 두 가지를 섞어서 반영했어요.</p>
+      <p style="color:var(--muted);font-size:14px">"Flipper"를 보드 기술(킥플립)로도 살릴 수 있어요. 점프 버튼을 눌러 보세요.</p>
     </div>
   </section>
 </main>
@@ -140,9 +141,9 @@ const rig=new THREE.Group();spinner.add(rig);
 
 /* ---------- SUPER-D build (faces +Z) ---------- */
 const PAINTS=[
-  {id:'yellow',name:'노랑 성난 오리',duck:'#ffd93b',wing:'#f0b400',head:'#ffd93b',deck:'#2fa3c9',deck2:'#2286a8',panel:'#f4f1ea'},
-  {id:'mallard',name:'청둥 성난 오리',duck:'#8c7a62',wing:'#6b5a46',head:'#1f7a4a',deck:'#e8483b',deck2:'#b83228',panel:'#f4f1ea'},
-  {id:'white',name:'흰 성난 오리',duck:'#fff8ea',wing:'#e9dfc8',head:'#fff8ea',deck:'#7a5af0',deck2:'#5d40c8',panel:'#2b2622'},
+  {id:'yellow',name:'노랑 성난 오리',duck:'#ffd93b',wing:'#f0b400',head:'#ffd93b',deck:'#2fa3c9',deck2:'#2286a8',panel:'#f4f1ea',wheel:'#ff8fb1',wheel2:'#ff5a8a'},
+  {id:'mallard',name:'청둥 성난 오리',duck:'#8c7a62',wing:'#6b5a46',head:'#1f7a4a',deck:'#e8483b',deck2:'#b83228',panel:'#f4f1ea',wheel:'#7cc45a',wheel2:'#4f9a3a'},
+  {id:'white',name:'흰 성난 오리',duck:'#fff8ea',wing:'#e9dfc8',head:'#fff8ea',deck:'#7a5af0',deck2:'#5d40c8',panel:'#2b2622',wheel:'#ffc83d',wheel2:'#e0a020'},
 ];
 let paint=PAINTS[0], car=null, parts={};
 function labelTex(dark){
@@ -164,20 +165,35 @@ function build(){
   if(car) rig.remove(car);
   car=new THREE.Group();rig.add(car);parts={wheels:[]};
   const body=new THREE.Group();car.add(body);parts.body=body;
-  // wheels: big, with dotted yellow hubs like the sketch
-  for(const [z,r] of [[1.2,0.56],[-1.25,0.6]]) for(const s of [1,-1]){const w=wheel(r,0.42);w.position.set(s*1.02,r,z);car.add(w);parts.wheels.push(w);}
-  // side panel with SUPER-D
-  put(body,mesh(new THREE.BoxGeometry(1.7,0.62,3.7),paint.panel),0,0.78,-0.05);
-  put(body,mesh(new THREE.BoxGeometry(1.5,0.4,0.5),paint.panel),0,0.66,1.95,-0.5);
-  const lt=labelTex(paint.panel==='#2b2622');
-  for(const s of [1,-1]){const p=new THREE.Mesh(new THREE.PlaneGeometry(2.1,0.52),new THREE.MeshBasicMaterial({map:lt,transparent:true}));p.position.set(s*0.856,0.8,0.15);p.rotation.y=s*PI/2;body.add(p);}
-  // flipper deck: wide rounded toe at the front, foot pocket at the back, ribbed on top
-  const sh=new THREE.Shape();sh.moveTo(-0.95,-1.95);sh.lineTo(0.95,-1.95);sh.lineTo(1.12,0.5);sh.quadraticCurveTo(1.32,2.3,0,2.4);sh.quadraticCurveTo(-1.32,2.3,-1.12,0.5);sh.closePath();
-  const deck=mesh(new THREE.ExtrudeGeometry(sh,{depth:0.13,bevelEnabled:true,bevelSize:0.04,bevelThickness:0.04,bevelSegments:1}),paint.deck);
-  put(body,deck,0,1.2,0,PI/2);
-  for(const x of [-0.6,-0.3,0,0.3,0.6]) put(body,mesh(new THREE.BoxGeometry(0.08,0.05,1.9-Math.abs(x)*0.8),paint.deck2),x,1.25,1.15);
+  const DY=0.8; // deck height
+  // skateboard deck: flat middle, kicktails at both ends, maple edge, black grip tape with SUPER-D on top
+  put(body,mesh(new THREE.BoxGeometry(1.5,0.12,3.2),'#e8c27a'),0,DY,0);
+  put(body,mesh(new THREE.BoxGeometry(1.44,0.03,3.2),'#2b2b33'),0,DY+0.075,0);
+  for(const s of [1,-1]){
+    const tail=new THREE.Group();tail.position.set(0,DY,s*1.6);tail.rotation.x=-s*0.32;body.add(tail);
+    put(tail,mesh(new THREE.BoxGeometry(1.5,0.12,0.7),'#e8c27a'),0,0,s*0.35);
+    put(tail,mesh(new THREE.CylinderGeometry(0.75,0.75,0.12,16,1,false,s>0?-PI/2:PI/2,PI),'#e8c27a'),0,0,s*0.7);
+    put(tail,mesh(new THREE.BoxGeometry(1.44,0.03,0.7),'#2b2b33'),0,0.075,s*0.35);
+    put(tail,mesh(new THREE.CylinderGeometry(0.72,0.72,0.03,16,1,false,s>0?-PI/2:PI/2,PI),'#2b2b33'),0,0.075,s*0.7);
+  }
+  for(const s of [1,-1]) put(body,mesh(new THREE.BoxGeometry(0.04,0.06,3.2),paint.deck),s*0.75,DY-0.03,0);
+  const gt=(()=>{const c=document.createElement('canvas');c.width=512;c.height=128;const g=c.getContext('2d');g.font='italic 900 92px "Black Han Sans", sans-serif';g.textAlign='center';g.textBaseline='middle';
+    g.lineWidth=10;g.strokeStyle='#2b2622';g.strokeText('SUPER-D',256,68);g.fillStyle=paint.head==='#fff8ea'?'#ffc83d':'#ffffff';g.fillText('SUPER-D',256,68);const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;return t;})();
+  const top=new THREE.Mesh(new THREE.PlaneGeometry(1.25,0.32),new THREE.MeshBasicMaterial({map:gt,transparent:true}));top.rotation.set(-PI/2,0,PI/2);top.position.set(0,DY+0.095,-0.05);body.add(top);
+  const lt=labelTex(false);
+  for(const s of [1,-1]){const p=new THREE.Mesh(new THREE.PlaneGeometry(1.6,0.4),new THREE.MeshBasicMaterial({map:lt,transparent:true}));p.position.set(s*0.77,DY-0.17,0.2);p.rotation.y=s*PI/2;body.add(p);}
+  // trucks and fat urethane wheels
+  for(const z of [1.25,-1.25]){
+    put(body,mesh(new THREE.BoxGeometry(0.5,0.1,0.42),'#c8cbe0'),0,DY-0.11,z);
+    put(body,mesh(new THREE.BoxGeometry(0.22,0.24,0.22),'#a6aab8'),0,DY-0.28,z);
+    put(car,mesh(new THREE.CylinderGeometry(0.07,0.07,1.75,8),'#c8cbe0'),0,0.34,z,0,0,PI/2);
+    for(const s of [1,-1]){const w=new THREE.Group();w.position.set(s*0.88,0.34,z);car.add(w);parts.wheels.push(w);
+      put(w,mesh(new THREE.CylinderGeometry(0.34,0.34,0.32,12),paint.wheel),0,0,0,0,0,PI/2);
+      put(w,mesh(new THREE.CylinderGeometry(0.16,0.16,0.34,8),'#ffffff'),0,0,0,0,0,PI/2);
+      put(w,mesh(new THREE.BoxGeometry(0.34,0.06,0.14),paint.wheel2),0,0.22,0);}
+  }
   // the MAD duck riding the front deck
-  const duck=new THREE.Group();duck.position.set(0,1.25,1.1);body.add(duck);parts.duck=duck;
+  const duck=new THREE.Group();duck.position.set(0,0.9,1.15);body.add(duck);parts.duck=duck;
   put(duck,mesh(new THREE.IcosahedronGeometry(1,1),paint.duck),0,0.42,-0.1,0,0,0,0.78,0.48,1.08);
   for(const s of [1,-1]) put(duck,mesh(new THREE.IcosahedronGeometry(1,1),paint.wing),s*0.55,0.5,-0.45,0.25,s*0.2,0,0.16,0.26,0.72);
   put(duck,mesh(new THREE.ConeGeometry(0.28,0.7,5),paint.wing),0,0.82,-1.15,-1.0);
@@ -195,22 +211,31 @@ function build(){
     put(head,mesh(new THREE.BoxGeometry(0.42,0.1,0.14),'#1a1410'),s*0.21,0.33,0.52,0,0,s*0.55);
   }
   for(const s of [1,-1]) put(head,mesh(new THREE.ConeGeometry(0.05,0.36,4),'#1a1410'),s*0.08,0.62,0.05,0.2,0,s*-0.35);
-  // cockpit fairing at the back + wild-haired driver
-  const prof=new THREE.Shape();prof.moveTo(-1.85,0);prof.lineTo(-1.85,0.92);prof.lineTo(-1.3,0.92);prof.lineTo(0.05,0);prof.closePath();
-  const fair=mesh(new THREE.ExtrudeGeometry(prof,{depth:1.3,bevelEnabled:false}),paint.panel);
-  put(body,fair,0.65,1.33,0,0,-PI/2);
-  for(const x of [-0.35,0,0.35]) put(body,mesh(new THREE.BoxGeometry(0.06,0.04,1.2),paint.deck2),x,1.82,-0.75,0.6);
-  const drv=new THREE.Group();drv.position.set(0,2.46,-1.62);body.add(drv);parts.driver=drv;
+  // little bucket seat for the driver
+  put(body,mesh(new THREE.BoxGeometry(0.7,0.22,0.6),'#3c3c46'),0,DY+0.2,-0.4);
+  put(body,mesh(new THREE.BoxGeometry(0.7,0.55,0.12),'#3c3c46'),0,DY+0.45,-0.68);
+  put(body,mesh(new THREE.IcosahedronGeometry(0.4,1),'#fff8ea'),0,DY+0.62,-0.38,0,0,0,1,0.9,0.9);
+  for(const s of [1,-1]) put(body,mesh(new THREE.BoxGeometry(0.1,0.1,0.55),'#fff8ea'),s*0.32,DY+0.68,-0.1,0.4);
+  const drv=new THREE.Group();drv.position.set(0,1.78,-0.35);body.add(drv);parts.driver=drv;
   put(drv,mesh(new THREE.IcosahedronGeometry(0.34,1),'#fff8ea'),0,0,0);
   put(drv,mesh(new THREE.BoxGeometry(0.26,0.08,0.3),'#ff9a1f'),0,-0.05,0.36);
   put(drv,mesh(new THREE.BoxGeometry(0.62,0.1,0.1),'#7a4a24'),0,0.08,0.3);
   for(const s of [1,-1]) put(drv,mesh(new THREE.BoxGeometry(0.16,0.13,0.08),'#7fd3ff'),s*0.14,0.08,0.36);
   for(let k=0;k<9;k++){const a=-1.2+k*0.3;put(drv,mesh(new THREE.ConeGeometry(0.08,0.55,4),'#5a3a1e'),Math.sin(a)*0.24,0.38,-0.12+(k%2)*0.12,-0.6+(k%3)*0.25,0,a*0.85);}
-  // rear spike = booster nozzle
-  const noz=put(body,mesh(new THREE.ConeGeometry(0.2,0.95,8),'#c8cbe0'),0,1.9,-2.35,-PI/2);
-  put(body,mesh(new THREE.CylinderGeometry(0.22,0.22,0.12,8),'#3c3c46'),0,1.9,-1.88,PI/2);
-  parts.nozzle=V(0,1.9,-2.85);
-  for(const s of [1,-1]) put(body,mesh(new THREE.BoxGeometry(0.12,0.12,0.06),'#fff6c0',{emissive:'#7a6a20'}),s*0.55,0.8,2.08);
+  // the jet engine on a pylon at the back: intake ring, spinning fan, red band, nozzle
+  const jet=new THREE.Group();jet.position.set(0,DY+0.95,-1.45);body.add(jet);
+  put(body,mesh(new THREE.BoxGeometry(0.16,0.55,0.9),'#a6aab8'),0,DY+0.35,-1.45);
+  put(jet,mesh(new THREE.CylinderGeometry(0.46,0.42,1.3,16),'#d0d2e6'),0,0,0,PI/2);
+  put(jet,mesh(new THREE.CylinderGeometry(0.47,0.47,0.16,16),'#e8483b'),0,0,0.1,PI/2);
+  put(jet,mesh(new THREE.TorusGeometry(0.45,0.07,8,20),'#a6aab8'),0,0,0.66);
+  put(jet,mesh(new THREE.CylinderGeometry(0.43,0.43,0.04,16),'#2b2b33'),0,0,0.5,PI/2);
+  const fan=new THREE.Group();fan.position.set(0,0,0.56);jet.add(fan);parts.fan=fan;
+  for(let k=0;k<8;k++){const b=new THREE.Group();b.rotation.z=k/8*PI*2;fan.add(b);put(b,mesh(new THREE.BoxGeometry(0.09,0.36,0.03),'#e6e9f2'),0,0.21,0,0,0.5);}
+  put(fan,mesh(new THREE.ConeGeometry(0.12,0.25,10),'#e6e9f2'),0,0,0.1,PI/2);
+  put(jet,mesh(new THREE.CylinderGeometry(0.42,0.28,0.4,16),'#8f93b0'),0,0,-0.85,PI/2);
+  const glow=put(jet,mesh(new THREE.CylinderGeometry(0.26,0.26,0.03,16),'#ff9a1f',{emissive:'#ff6a1a'}),0,0,-1.06,PI/2);parts.glow=glow;
+  parts.nozzle=V(0,DY+0.95,-2.55);
+  for(const s of [1,-1]) put(body,mesh(new THREE.BoxGeometry(0.12,0.08,0.06),'#fff6c0',{emissive:'#7a6a20'}),s*0.45,DY+0.02,2.31);
 }
 build();
 
@@ -271,6 +296,9 @@ function tick(now){
   parts.head.rotation.z=Math.sin(st.clock*1.7)*0.05;
   parts.billLo.position.y=-0.2-chomp*0.12;parts.billLo.rotation.x=chomp*0.35;
   parts.driver.rotation.z=Math.sin(st.clock*3.1)*0.08+(st.run?Math.sin(st.clock*14)*0.05:0);
+  parts.fan.rotation.z+=(st.boostT>=0?45:st.run?26:8)*dt;
+  parts.glow.scale.setScalar(st.boostT>=0?1.3+Math.random()*0.3:1+Math.sin(st.clock*12)*0.05);
+  parts.body.rotation.z=st.jumpT>=0?Math.min(1,st.jumpT/0.85)*PI*2:0;
   for(let i=fx.length-1;i>=0;i--){const p=fx[i];p.life+=dt;const k=p.life/p.max;if(k>=1){scene.remove(p.m);fx.splice(i,1);continue;}
     p.v.multiplyScalar(1-2*dt);p.m.position.addScaledVector(p.v,dt);p.m.scale.setScalar(Math.max(0.01,p.s*(1-k)));}
   renderer.render(scene,camera);requestAnimationFrame(tick);
