@@ -58,6 +58,7 @@ h2{font-family:var(--display);font-weight:400;font-size:30px;margin:0;color:var(
 .row{display:flex;gap:10px;flex-wrap:wrap}
 .big{flex:1 1 180px;padding:14px 16px;border-radius:12px;border:0;font-size:22px;background:var(--accent);color:#2b1d00;box-shadow:0 5px 0 #8a5a00}
 .big:active{transform:translateY(3px);box-shadow:0 2px 0 #8a5a00}
+.card>.big{flex:none}
 .big.alt{background:var(--panel-2);color:var(--ink);box-shadow:0 5px 0 #120d0a;border:2px solid var(--line)}
 .big.ad{background:var(--fart);color:#22300a;box-shadow:0 5px 0 #3d5214}
 .big:disabled{opacity:.45;cursor:default}
@@ -1209,7 +1210,7 @@ function drawHud(){
 }
 function drawMinimap(){
   const mw=portraitView?118:150, bw=portraitView?H:W, bh=(portraitView?W:H)*K, sc=mw/bw, mh=bh*sc;
-  const x0=VW-mw-14, y0=portraitView?96:60;
+  const x0=VW-mw-14, y0=portraitView?124:60;
   ctx.fillStyle='rgba(20,15,11,.7)';rr(x0-8,y0-8,mw+16,mh+16,10);ctx.fill();
   const m=(x,y)=>[x0+pu(x,y)*sc,y0+pv(x,y)*K*sc];
   ctx.lineJoin='round';ctx.lineCap='round';
