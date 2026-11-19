@@ -1,0 +1,277 @@
+<title>슈퍼 D 플리퍼카</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Dodum&display=swap">
+<style>
+/* Layout: the designer's pencil sketch pinned beside the 3D turntable build of it, so the two can be compared directly; reading notes and open questions underneath. Bright toy-box palette to match the Kenney kit look of v2. */
+:root{
+  --paper:#fffaf0;
+  --ink:#2b2622;
+  --muted:#6f655b;
+  --line:#e2d6c2;
+  --accent:#ffc83d;
+  --accent-ink:#4a3200;
+  --fin:#2fa3c9;
+  --mad:#e8483b;
+  --display:"Black Han Sans","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#221d19;--ink:#fff4e2;--muted:#c9b597;--line:#4a3d31;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#221d19;--ink:#fff4e2;--muted:#c9b597;--line:#4a3d31;color-scheme:dark}
+[hidden]{display:none!important}
+html{background:var(--paper)}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:1140px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px;display:flex;flex-direction:column;gap:18px}
+h1,h2{font-family:var(--display);font-weight:400;margin:0;line-height:1.12;text-wrap:balance}
+h1{font-size:clamp(32px,6vw,54px)}
+h1 em{font-style:normal;color:var(--mad)}
+h2{font-size:24px}
+p{margin:0}
+.eyebrow{font-family:var(--display);font-size:13px;letter-spacing:.08em;color:var(--fin)}
+.lede{color:var(--muted);max-width:68ch}
+.pair{display:grid;grid-template-columns:minmax(0,0.8fr) minmax(0,1.4fr);gap:14px;align-items:stretch}
+@media (max-width:860px){.pair{grid-template-columns:1fr}}
+.sketch{margin:0;display:flex;flex-direction:column;gap:6px;min-width:0}
+.sketch img{width:100%;max-width:100%;border-radius:16px;border:3px solid var(--line);background:#f4f2ee}
+.sketch figcaption{font-size:13px;color:var(--muted)}
+.stage{position:relative;border-radius:18px;overflow:hidden;border:3px solid var(--line);background:linear-gradient(#bfe6f2,#e6f5ea);aspect-ratio:16/10;max-width:100%;touch-action:none;cursor:grab;min-width:0}
+.stage canvas{display:block;width:100%;height:100%}
+.pop{position:absolute;left:50%;top:22%;transform:translate(-50%,-50%) scale(.6);font-family:var(--display);font-size:56px;color:#ffc83d;-webkit-text-stroke:3px #2b1d00;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.pop.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);color:#2b2622}
+.acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.act{font-family:var(--display);font-size:17px;border:0;border-radius:14px;padding:10px 16px;cursor:pointer;background:var(--mad);color:#fff4e2;box-shadow:0 4px 0 #8a2a22}
+.act.y{background:var(--accent);color:var(--accent-ink);box-shadow:0 4px 0 #a67a10}
+.act.ghost{background:transparent;color:var(--ink);border:2px solid var(--line);box-shadow:none}
+.act.ghost[aria-pressed="true"]{border-color:var(--fin);color:var(--fin)}
+.act:active{transform:translateY(3px);box-shadow:none}
+.act:focus-visible,.swatch:focus-visible{outline:3px solid var(--fin);outline-offset:2px}
+.paints{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.paints span{font-size:13px;color:var(--muted)}
+.swatch{display:flex;align-items:center;gap:6px;font-family:var(--display);font-size:14px;padding:6px 10px;border-radius:999px;border:2px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.swatch i{width:14px;height:14px;border-radius:50%;border:2px solid rgba(0,0,0,.3)}
+.swatch[aria-pressed="true"]{border-color:var(--accent)}
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:760px){.notes{grid-template-columns:1fr}}
+.box{border:2px solid var(--line);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.box ul,.box ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
+.box b{font-family:var(--display);font-weight:400}
+</style>
+
+<main class="wrap">
+  <header style="display:flex;flex-direction:column;gap:8px">
+    <p class="eyebrow">뿡뿡 랠리 · 탈것 시안 · 스케치에서 3D로</p>
+    <h1>슈퍼 D 플리퍼카 <em>× 성난 오리</em></h1>
+    <p class="lede">보내주신 연필 스케치 "Flipper-CAR with MAD-duck"을 3D 버전과 같은 Kenney 로우폴리 스타일로 옮겼어요. 왼쪽 스케치와 오른쪽 모델을 나란히 비교해 보세요.</p>
+  </header>
+
+  <section class="pair" aria-label="스케치와 3D 비교">
+    <figure class="sketch">
+      <img src="sketch.jpg" alt="연필 스케치: 납작한 차 앞에 화난 오리, 뒤에 조종석과 원뿔, 옆면에 SUPER-D 글자">
+      <figcaption>원본 스케치</figcaption>
+    </figure>
+    <div class="stage" id="stage"><div class="loading" id="loading">모델 만드는 중…</div><div class="pop" id="pop">꽉!</div></div>
+  </section>
+
+  <div class="acts">
+    <button class="act" id="aBoost">꽉! 부스트</button>
+    <button class="act y" id="aJump">점프</button>
+    <button class="act ghost" id="aRun" aria-pressed="false">질주</button>
+    <button class="act ghost" id="aSide" aria-pressed="false">스케치 각도</button>
+    <button class="act ghost" id="aGame" aria-pressed="false">게임 시점</button>
+    <button class="act ghost" id="aSpin" aria-pressed="true">자동 회전</button>
+  </div>
+  <div class="paints" id="paints"><span>도색</span></div>
+
+  <section class="notes">
+    <div class="box">
+      <h2>스케치를 이렇게 읽었어요</h2>
+      <ul>
+        <li><b>플리퍼 차체:</b> 길고 납작한 판을 오리발(물갈퀴) 모양으로 잡았어요. 앞이 넓고 둥글며, 위에 물갈퀴 골이 있어요.</li>
+        <li><b>성난 오리:</b> 앞 갑판에 올라탄 커다란 오리. 찌푸린 눈썹, 머리 위 깃털 두 가닥, 뒤로 뻗친 날개를 넣었어요.</li>
+        <li><b>조종석:</b> 뒤쪽의 비스듬한 덮개 속에 머리가 부스스한 운전자가 앉아 있어요.</li>
+        <li><b>뒤 원뿔:</b> 부스터 노즐로 해석했어요. 부스트하면 불꽃이 나와요.</li>
+        <li><b>SUPER-D:</b> 옆판 글자를 그대로 살렸고, 휠캡의 점 무늬도 넣었어요.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h2>게임 속 작동 아이디어</h2>
+      <ul>
+        <li><b>꽉! 부스트:</b> 앞의 오리가 목을 쭉 내밀며 부리를 "꽉" 다물어요. 이때 부딪힌 차는 핀볼 플리퍼에 맞은 것처럼 튕겨 나가요.</li>
+        <li><b>물 위 주행:</b> 오리발 차체라 물웅덩이에서는 느려지지 않고 오히려 빨라져요.</li>
+        <li><b>성격:</b> 머리가 무거운 앞쪽 무게중심이라 점프하면 앞으로 고꾸라지듯 착지해요.</li>
+      </ul>
+      <p style="color:var(--muted);font-size:14px">궁금한 점: "Flipper"가 오리발(물갈퀴)인지, 핀볼 플리퍼인지, 아니면 뒤집기(flip)인지 알려주세요. 지금은 앞의 두 가지를 섞어서 반영했어요.</p>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(() => {
+'use strict';
+const $=id=>document.getElementById(id);
+const stage=$('stage');
+if(!window.THREE){$('loading').textContent='3D 엔진을 불러오지 못했어요. 새로고침해 주세요.';return;}
+let renderer;try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});}catch(e){$('loading').textContent='이 기기에서는 3D를 켤 수 없어요.';return;}
+renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));renderer.outputEncoding=THREE.sRGBEncoding;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+stage.prepend(renderer.domElement);$('loading').hidden=true;
+const V=(x,y,z)=>new THREE.Vector3(x,y,z), PI=Math.PI;
+const MATS={};const mat=(c,o)=>{const k=c+(o?JSON.stringify(o):'');return MATS[k]||(MATS[k]=new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:0.7,flatShading:true},o||{})));};
+function mesh(geo,c,o){const m=new THREE.Mesh(geo,mat(c,o));m.castShadow=true;m.receiveShadow=true;return m;}
+function put(parent,m,x,y,z,rx=0,ry=0,rz=0,sx=1,sy=1,sz=1){m.position.set(x,y,z);m.rotation.set(rx,ry,rz);m.scale.set(sx,sy,sz);parent.add(m);return m;}
+
+const scene=new THREE.Scene();scene.fog=new THREE.Fog(0xd8f0ea,26,60);
+const camera=new THREE.PerspectiveCamera(30,16/10,0.1,200);
+scene.add(new THREE.HemisphereLight(0xffffff,0x9fbf8a,0.9));
+const sun=new THREE.DirectionalLight(0xffffff,0.9);sun.position.set(6,12,7);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);
+Object.assign(sun.shadow.camera,{left:-8,right:8,top:8,bottom:-8,near:1,far:40});scene.add(sun);
+const ground=new THREE.Mesh(new THREE.CircleGeometry(60,48),mat('#8fcf6a'));ground.rotation.x=-PI/2;ground.receiveShadow=true;scene.add(ground);
+// a stretch of road whose stripes scroll when "질주" is on
+const road=new THREE.Group();scene.add(road);
+put(road,mesh(new THREE.BoxGeometry(5.2,0.04,60),'#5a5a6a'),0,0.02,0);
+for(const s of [-1,1]) put(road,mesh(new THREE.BoxGeometry(0.3,0.06,60),'#ffc83d'),s*2.45,0.03,0);
+const dashes=[];for(let k=0;k<16;k++) dashes.push(put(road,mesh(new THREE.BoxGeometry(0.16,0.06,1.2),'#e9e6f2'),0,0.04,-30+k*4));
+const curbs=[];for(let k=0;k<40;k++) for(const s of [-1,1]) curbs.push(put(road,mesh(new THREE.BoxGeometry(0.4,0.1,1.5),k%2?'#e8483b':'#f4f1ea'),s*2.8,0.05,-30+k*1.5));
+
+const spinner=new THREE.Group();scene.add(spinner);
+const rig=new THREE.Group();spinner.add(rig);
+
+/* ---------- SUPER-D build (faces +Z) ---------- */
+const PAINTS=[
+  {id:'yellow',name:'노랑 성난 오리',duck:'#ffd93b',wing:'#f0b400',head:'#ffd93b',deck:'#2fa3c9',deck2:'#2286a8',panel:'#f4f1ea'},
+  {id:'mallard',name:'청둥 성난 오리',duck:'#8c7a62',wing:'#6b5a46',head:'#1f7a4a',deck:'#e8483b',deck2:'#b83228',panel:'#f4f1ea'},
+  {id:'white',name:'흰 성난 오리',duck:'#fff8ea',wing:'#e9dfc8',head:'#fff8ea',deck:'#7a5af0',deck2:'#5d40c8',panel:'#2b2622'},
+];
+let paint=PAINTS[0], car=null, parts={};
+function labelTex(dark){
+  const c=document.createElement('canvas');c.width=512;c.height=128;const g=c.getContext('2d');
+  g.clearRect(0,0,512,128);g.font='italic 900 84px "Black Han Sans", sans-serif';g.textAlign='center';g.textBaseline='middle';
+  g.lineWidth=10;g.strokeStyle=dark?'#ffc83d':'#2b2622';g.strokeText('SUPER-D',256,68);g.fillStyle='#e8483b';g.fillText('SUPER-D',256,68);
+  const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;return t;
+}
+function wheel(r,w){
+  const g=new THREE.Group();
+  put(g,mesh(new THREE.CylinderGeometry(r,r,w,12),'#3c3c46'),0,0,0,0,0,PI/2);
+  for(let k=0;k<12;k++){const a=k/12*PI*2;put(g,mesh(new THREE.BoxGeometry(w*1.02,r*0.12,r*0.22),'#2b2b33'),0,Math.cos(a)*r*0.98,Math.sin(a)*r*0.98,a);}
+  put(g,mesh(new THREE.CylinderGeometry(r*0.58,r*0.58,w*1.06,10),'#ffc83d'),0,0,0,0,0,PI/2);
+  for(let k=0;k<5;k++){const a=k/5*PI*2;for(const s of [1,-1]) put(g,mesh(new THREE.BoxGeometry(0.04,0.07,0.07),'#2b2622'),s*w*0.54,Math.cos(a)*r*0.32,Math.sin(a)*r*0.32);}
+  for(const s of [1,-1]) put(g,mesh(new THREE.CylinderGeometry(r*0.14,r*0.14,0.04,8),'#2b2622'),s*w*0.54,0,0,0,0,PI/2);
+  return g;
+}
+function build(){
+  if(car) rig.remove(car);
+  car=new THREE.Group();rig.add(car);parts={wheels:[]};
+  const body=new THREE.Group();car.add(body);parts.body=body;
+  // wheels: big, with dotted yellow hubs like the sketch
+  for(const [z,r] of [[1.2,0.56],[-1.25,0.6]]) for(const s of [1,-1]){const w=wheel(r,0.42);w.position.set(s*1.02,r,z);car.add(w);parts.wheels.push(w);}
+  // side panel with SUPER-D
+  put(body,mesh(new THREE.BoxGeometry(1.7,0.62,3.7),paint.panel),0,0.78,-0.05);
+  put(body,mesh(new THREE.BoxGeometry(1.5,0.4,0.5),paint.panel),0,0.66,1.95,-0.5);
+  const lt=labelTex(paint.panel==='#2b2622');
+  for(const s of [1,-1]){const p=new THREE.Mesh(new THREE.PlaneGeometry(2.1,0.52),new THREE.MeshBasicMaterial({map:lt,transparent:true}));p.position.set(s*0.856,0.8,0.15);p.rotation.y=s*PI/2;body.add(p);}
+  // flipper deck: wide rounded toe at the front, foot pocket at the back, ribbed on top
+  const sh=new THREE.Shape();sh.moveTo(-0.95,-1.95);sh.lineTo(0.95,-1.95);sh.lineTo(1.12,0.5);sh.quadraticCurveTo(1.32,2.3,0,2.4);sh.quadraticCurveTo(-1.32,2.3,-1.12,0.5);sh.closePath();
+  const deck=mesh(new THREE.ExtrudeGeometry(sh,{depth:0.13,bevelEnabled:true,bevelSize:0.04,bevelThickness:0.04,bevelSegments:1}),paint.deck);
+  put(body,deck,0,1.2,0,PI/2);
+  for(const x of [-0.6,-0.3,0,0.3,0.6]) put(body,mesh(new THREE.BoxGeometry(0.08,0.05,1.9-Math.abs(x)*0.8),paint.deck2),x,1.25,1.15);
+  // the MAD duck riding the front deck
+  const duck=new THREE.Group();duck.position.set(0,1.25,1.1);body.add(duck);parts.duck=duck;
+  put(duck,mesh(new THREE.IcosahedronGeometry(1,1),paint.duck),0,0.42,-0.1,0,0,0,0.78,0.48,1.08);
+  for(const s of [1,-1]) put(duck,mesh(new THREE.IcosahedronGeometry(1,1),paint.wing),s*0.55,0.5,-0.45,0.25,s*0.2,0,0.16,0.26,0.72);
+  put(duck,mesh(new THREE.ConeGeometry(0.28,0.7,5),paint.wing),0,0.82,-1.15,-1.0);
+  const head=new THREE.Group();head.position.set(0,1.05,0.62);duck.add(head);parts.head=head;
+  put(head,mesh(new THREE.IcosahedronGeometry(0.56,1),paint.head),0,0,0);
+  const billUp=put(head,mesh(new THREE.BoxGeometry(0.46,0.11,0.55),'#ff9a1f'),0,-0.08,0.62);
+  const billLo=put(head,mesh(new THREE.BoxGeometry(0.42,0.08,0.48),'#e8801a'),0,-0.2,0.56);
+  parts.billLo=billLo;
+  for(const s of [1,-1]){
+    put(head,mesh(new THREE.IcosahedronGeometry(0.16,1),'#ffffff'),s*0.25,0.12,0.44,0,0,0,1,1,0.55);
+    put(head,mesh(new THREE.BoxGeometry(0.09,0.09,0.06),'#1a1410'),s*0.22,0.1,0.53);
+    put(head,mesh(new THREE.BoxGeometry(0.3,0.07,0.08),'#1a1410'),s*0.25,0.3,0.48,0,0,s*-0.45);
+  }
+  for(const s of [1,-1]) put(head,mesh(new THREE.ConeGeometry(0.05,0.36,4),'#1a1410'),s*0.08,0.62,0.05,0.2,0,s*-0.35);
+  // cockpit fairing at the back + wild-haired driver
+  const prof=new THREE.Shape();prof.moveTo(-1.85,0);prof.lineTo(-1.85,0.92);prof.lineTo(-1.3,0.92);prof.lineTo(0.05,0);prof.closePath();
+  const fair=mesh(new THREE.ExtrudeGeometry(prof,{depth:1.3,bevelEnabled:false}),paint.panel);
+  put(body,fair,0.65,1.33,0,0,-PI/2);
+  for(const x of [-0.35,0,0.35]) put(body,mesh(new THREE.BoxGeometry(0.06,0.04,1.2),paint.deck2),x,1.82,-0.75,0.6);
+  const drv=new THREE.Group();drv.position.set(0,2.46,-1.62);body.add(drv);parts.driver=drv;
+  put(drv,mesh(new THREE.IcosahedronGeometry(0.34,1),'#fff8ea'),0,0,0);
+  put(drv,mesh(new THREE.BoxGeometry(0.26,0.08,0.3),'#ff9a1f'),0,-0.05,0.36);
+  put(drv,mesh(new THREE.BoxGeometry(0.62,0.1,0.1),'#7a4a24'),0,0.08,0.3);
+  for(const s of [1,-1]) put(drv,mesh(new THREE.BoxGeometry(0.16,0.13,0.08),'#7fd3ff'),s*0.14,0.08,0.36);
+  for(let k=0;k<9;k++){const a=-1.2+k*0.3;put(drv,mesh(new THREE.ConeGeometry(0.08,0.55,4),'#5a3a1e'),Math.sin(a)*0.24,0.38,-0.12+(k%2)*0.12,-0.6+(k%3)*0.25,0,a*0.85);}
+  // rear spike = booster nozzle
+  const noz=put(body,mesh(new THREE.ConeGeometry(0.2,0.95,8),'#c8cbe0'),0,1.9,-2.35,-PI/2);
+  put(body,mesh(new THREE.CylinderGeometry(0.22,0.22,0.12,8),'#3c3c46'),0,1.9,-1.88,PI/2);
+  parts.nozzle=V(0,1.9,-2.85);
+  for(const s of [1,-1]) put(body,mesh(new THREE.BoxGeometry(0.12,0.12,0.06),'#fff6c0',{emissive:'#7a6a20'}),s*0.55,0.8,2.08);
+}
+build();
+
+/* ---------- effects ---------- */
+const fx=[];
+function flame(n){
+  car.updateMatrixWorld(true);
+  const o=parts.nozzle.clone().applyMatrix4(parts.body.matrixWorld), back=V(0,0,-1).transformDirection(parts.body.matrixWorld);
+  for(let i=0;i<n;i++){const c=['#ffc83d','#ff9a1f','#e8483b'][i%3];
+    const m=mesh(new THREE.IcosahedronGeometry(1,0),c,{emissive:c});m.castShadow=false;m.position.copy(o);scene.add(m);
+    fx.push({m,v:back.clone().multiplyScalar(4+Math.random()*3).add(V((Math.random()-.5)*1.2,(Math.random()-.2)*1.2,(Math.random()-.5)*1.2)),life:0,max:0.45+Math.random()*0.3,s:0.22});}
+}
+const streaks=[];
+function streak(){const m=mesh(new THREE.BoxGeometry(0.05,0.05,1.6+Math.random()*1.4),'#ffffff',{transparent:true,opacity:0.8});m.castShadow=false;
+  m.position.set((Math.random()-.5)*7,0.4+Math.random()*2.6,8);scene.add(m);streaks.push(m);}
+
+/* ---------- UI ---------- */
+$('paints').insertAdjacentHTML('beforeend',PAINTS.map(p=>`<button class="swatch" data-id="${p.id}" aria-pressed="${p===paint}"><i style="background:${p.head}"></i>${p.name}</button>`).join(''));
+$('paints').addEventListener('click',e=>{const b=e.target.closest('.swatch');if(!b)return;paint=PAINTS.find(p=>p.id===b.dataset.id);build();
+  document.querySelectorAll('.swatch').forEach(s=>s.setAttribute('aria-pressed',String(s===b)));});
+const st={auto:!matchMedia('(prefers-reduced-motion: reduce)').matches,angle:0.75,run:false,side:false,game:false,boostT:-1,jumpT:-1,landT:-1,drag:null,idle:0,clock:0};
+$('aSpin').setAttribute('aria-pressed',String(st.auto));
+const tog=(id,key,after)=>{$(id).onclick=()=>{st[key]=!st[key];$(id).setAttribute('aria-pressed',String(st[key]));if(after)after();};};
+tog('aRun','run');tog('aSpin','auto');
+tog('aSide','side',()=>{if(st.side){st.auto=false;$('aSpin').setAttribute('aria-pressed','false');st.angle=-PI/2;}});
+tog('aGame','game',setCam);
+$('aBoost').onclick=()=>{st.boostT=0;flame(26);const p=$('pop');p.classList.add('on');setTimeout(()=>p.classList.remove('on'),550);};
+$('aJump').onclick=()=>{if(st.jumpT<0)st.jumpT=0;};
+stage.addEventListener('pointerdown',e=>{st.drag={x:e.clientX,a:st.angle};try{stage.setPointerCapture(e.pointerId);}catch(_){}});
+stage.addEventListener('pointermove',e=>{if(!st.drag)return;st.angle=st.drag.a+(e.clientX-st.drag.x)*0.012;st.idle=0;});
+const end=()=>{st.drag=null;};stage.addEventListener('pointerup',end);stage.addEventListener('pointercancel',end);
+function setCam(){ if(st.game){camera.fov=20;camera.position.set(0,28,18);camera.lookAt(0,0.6,0);} else {camera.fov=30;camera.position.set(0,3.6,9.6);camera.lookAt(0,1.25,0);} camera.updateProjectionMatrix(); }
+function resize(){const r=stage.getBoundingClientRect();renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix();}
+new ResizeObserver(resize).observe(stage);setCam();
+
+/* ---------- loop ---------- */
+let last=performance.now();
+function tick(now){
+  const dt=Math.min(0.05,(now-last)/1000);last=now;st.clock+=dt;
+  if(!st.drag){st.idle+=dt;if(st.auto&&st.idle>1.2)st.angle+=dt*0.4;}
+  spinner.rotation.y=st.angle;
+  const speed=st.run?14:0;
+  for(const d of dashes){d.position.z+=speed*dt;if(d.position.z>30)d.position.z-=64;}
+  for(const c of curbs){c.position.z+=speed*dt;if(c.position.z>30)c.position.z-=60;}
+  if(st.run&&Math.random()<0.5) streak();
+  for(let i=streaks.length-1;i>=0;i--){const s=streaks[i];s.position.z-=30*dt;if(s.position.z<-12){scene.remove(s);streaks.splice(i,1);}}
+  road.rotation.y=0;
+  let ws=st.run?16:2, y=0, nose=0, lunge=0, sq=1;
+  if(st.boostT>=0){st.boostT+=dt;const k=st.boostT;ws=22;lunge=k<0.5?Math.sin(k/0.5*PI)*0.5:0;nose=k<0.4?Math.sin(k/0.4*PI)*0.07:0;if(k<0.45&&Math.random()<0.6)flame(2);if(k>0.9)st.boostT=-1;}
+  if(st.jumpT>=0){st.jumpT+=dt;const k=st.jumpT/0.85;if(k<1){y=Math.sin(k*PI)*1.5;nose=(k-0.4)*0.5;}else{st.jumpT=-1;st.landT=0;}}
+  if(st.landT>=0){st.landT+=dt;sq=1-Math.exp(-st.landT*6)*Math.cos(st.landT*22)*0.12;if(st.landT>0.9)st.landT=-1;}
+  rig.position.set(0,y,lunge);rig.rotation.x=nose;car.scale.set(1+(1-sq)*0.4,sq,1+(1-sq)*0.4);
+  for(const w of parts.wheels) w.rotation.x+=ws*dt;
+  // the duck: angry bobbing, lunges and snaps its bill on boost
+  const chomp=st.boostT>=0&&st.boostT<0.6?Math.abs(Math.sin(st.boostT*30)):0;
+  parts.head.position.z=0.62+(st.boostT>=0&&st.boostT<0.6?Math.sin(st.boostT/0.6*PI)*0.55:0);
+  parts.head.rotation.x=Math.sin(st.clock*2.4)*0.06+(st.landT>=0?Math.exp(-st.landT*4)*Math.sin(st.landT*18)*0.3:0);
+  parts.head.rotation.z=Math.sin(st.clock*1.7)*0.05;
+  parts.billLo.position.y=-0.2-chomp*0.12;parts.billLo.rotation.x=chomp*0.35;
+  parts.driver.rotation.z=Math.sin(st.clock*3.1)*0.08+(st.run?Math.sin(st.clock*14)*0.05:0);
+  for(let i=fx.length-1;i>=0;i--){const p=fx[i];p.life+=dt;const k=p.life/p.max;if(k>=1){scene.remove(p.m);fx.splice(i,1);continue;}
+    p.v.multiplyScalar(1-2*dt);p.m.position.addScaledVector(p.v,dt);p.m.scale.setScalar(Math.max(0.01,p.s*(1-k)));}
+  renderer.render(scene,camera);requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+})();
+</script>
