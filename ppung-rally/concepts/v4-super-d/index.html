@@ -61,7 +61,7 @@ p{margin:0}
 
 <main class="wrap">
   <header style="display:flex;flex-direction:column;gap:8px">
-    <p class="eyebrow">뿡뿡 랠리 · 탈것 시안 v2 · 스케이트보드 + 제트 엔진</p>
+    <p class="eyebrow">뿡뿡 랠리 · 탈것 시안 v3 · 스케이트보드 + 제트 엔진</p>
     <h1>슈퍼 D 제트보드 <em>× 성난 오리</em></h1>
     <p class="lede">스케치의 성난 오리가 이제 직접 운전해요. 커다란 스케이트보드 위 버킷 시트에 앉아 날개로 핸들을 잡고, 뒤에는 제트 엔진, 아래에는 오프로드 바퀴를 달았어요.</p>
   </header>
@@ -98,11 +98,9 @@ p{margin:0}
       <h2>게임 속 작동 아이디어</h2>
       <ul>
         <li><b>꽉! 부스트:</b> 운전하던 오리가 핸들 너머로 목을 쭉 내밀며 부리를 "꽉" 다물어요. 이때 부딪힌 차는 핀볼 플리퍼에 맞은 것처럼 튕겨 나가요.</li>
-        <li><b>보드 기술:</b> 점프대에서 부스트하면 보드가 한 바퀴 도는 킥플립 점프. 성공하면 콩 보너스.</li>
         <li><b>제트 과열:</b> 부스트를 연달아 쓰면 엔진이 빨갛게 달아올라 잠깐 쉬어야 해요.</li>
         <li><b>성격:</b> 머리가 무거운 앞쪽 무게중심이라 점프하면 앞으로 고꾸라지듯 착지해요.</li>
       </ul>
-      <p style="color:var(--muted);font-size:14px">"Flipper"를 보드 기술(킥플립)로도 살릴 수 있어요. 점프 버튼을 눌러 보세요.</p>
     </div>
   </section>
 </main>
@@ -248,7 +246,7 @@ function flame(n){
 }
 const streaks=[];
 function streak(){const m=mesh(new THREE.BoxGeometry(0.05,0.05,1.6+Math.random()*1.4),'#ffffff',{transparent:true,opacity:0.8});m.castShadow=false;
-  m.position.set((Math.random()-.5)*7,0.4+Math.random()*2.6,8);scene.add(m);streaks.push(m);}
+  const sx=Math.random()<.5?-1:1;m.position.set(sx*(1.6+Math.random()*2),0.3+Math.random()*2.8,8);scene.add(m);streaks.push(m);}
 
 /* ---------- UI ---------- */
 $('paints').insertAdjacentHTML('beforeend',PAINTS.map(p=>`<button class="swatch" data-id="${p.id}" aria-pressed="${p===paint}"><i style="background:${p.head}"></i>${p.name}</button>`).join(''));
@@ -260,7 +258,7 @@ const tog=(id,key,after)=>{$(id).onclick=()=>{st[key]=!st[key];$(id).setAttribut
 tog('aRun','run');tog('aSpin','auto');
 tog('aSide','side',()=>{if(st.side){st.auto=false;$('aSpin').setAttribute('aria-pressed','false');st.angle=-PI/2;}});
 tog('aGame','game',setCam);
-$('aBoost').onclick=()=>{st.boostT=0;flame(26);const p=$('pop');p.classList.add('on');setTimeout(()=>p.classList.remove('on'),550);};
+$('aBoost').onclick=()=>{st.boostT=0;flame(26);const p=$('pop');p.classList.add('on');clearTimeout(window.__popT);window.__popT=setTimeout(()=>p.classList.remove('on'),1100);};
 $('aJump').onclick=()=>{if(st.jumpT<0)st.jumpT=0;};
 stage.addEventListener('pointerdown',e=>{st.drag={x:e.clientX,a:st.angle};try{stage.setPointerCapture(e.pointerId);}catch(_){}});
 stage.addEventListener('pointermove',e=>{if(!st.drag)return;st.angle=st.drag.a+(e.clientX-st.drag.x)*0.012;st.idle=0;});
@@ -282,21 +280,21 @@ function tick(now){
   for(let i=streaks.length-1;i>=0;i--){const s=streaks[i];s.position.z-=30*dt;if(s.position.z<-12){scene.remove(s);streaks.splice(i,1);}}
   road.rotation.y=0;
   let ws=st.run?16:2, y=0, nose=0, lunge=0, sq=1;
-  if(st.boostT>=0){st.boostT+=dt;const k=st.boostT;ws=22;lunge=k<0.5?Math.sin(k/0.5*PI)*0.5:0;nose=k<0.4?Math.sin(k/0.4*PI)*0.07:0;if(k<0.45&&Math.random()<0.6)flame(2);if(k>0.9)st.boostT=-1;}
-  if(st.jumpT>=0){st.jumpT+=dt;const k=st.jumpT/0.85;if(k<1){y=Math.sin(k*PI)*1.5;nose=(k-0.4)*0.5;}else{st.jumpT=-1;st.landT=0;}}
+  // boost lasts 1.8 s (twice the old 0.9 s): surge forward, slight wheelie, flames the whole time, then settle
+  if(st.boostT>=0){st.boostT+=dt;const k=st.boostT;ws=22;lunge=k<1.0?Math.sin(k/1.0*PI)*0.5:0;nose=k<0.8?-Math.sin(k/0.8*PI)*0.06:0;if(k<1.6&&Math.random()<0.6)flame(2);if(k>1.8)st.boostT=-1;}
+  if(st.jumpT>=0){st.jumpT+=dt;const k=st.jumpT/0.85;if(k<1){y=Math.sin(k*PI)*1.5;nose=(k-0.45)*0.3;}else{st.jumpT=-1;st.landT=0;}}
   if(st.landT>=0){st.landT+=dt;sq=1-Math.exp(-st.landT*6)*Math.cos(st.landT*22)*0.12;if(st.landT>0.9)st.landT=-1;}
   rig.position.set(0,y,lunge);rig.rotation.x=nose;car.scale.set(1+(1-sq)*0.4,sq,1+(1-sq)*0.4);
   for(const w of parts.wheels) w.rotation.x+=ws*dt;
   // the duck: angry bobbing, lunges and snaps its bill on boost
-  const chomp=st.boostT>=0&&st.boostT<0.6?Math.abs(Math.sin(st.boostT*30)):0;
-  parts.head.position.z=0.62+(st.boostT>=0&&st.boostT<0.6?Math.sin(st.boostT/0.6*PI)*0.55:0);
+  const bw=st.boostT>=0&&st.boostT<1.2, chomp=bw?Math.abs(Math.sin(st.boostT*30)):0, reach=bw?Math.sin(st.boostT/1.2*PI):0;
+  parts.head.position.z=0.62+reach*0.35; parts.head.position.y=1.5+reach*0.12;
   parts.head.rotation.x=Math.sin(st.clock*2.4)*0.06+(st.landT>=0?Math.exp(-st.landT*4)*Math.sin(st.landT*18)*0.3:0);
   parts.head.rotation.z=Math.sin(st.clock*1.7)*0.05;
   parts.billLo.position.y=-0.2-chomp*0.12;parts.billLo.rotation.x=chomp*0.35;
   parts.driver.rotation.z=Math.sin(st.clock*3.1)*0.08+(st.run?Math.sin(st.clock*14)*0.05:0);
   parts.fan.rotation.z+=(st.boostT>=0?45:st.run?26:8)*dt;
   parts.glow.scale.setScalar(st.boostT>=0?1.3+Math.random()*0.3:1+Math.sin(st.clock*12)*0.05);
-  parts.body.rotation.z=st.jumpT>=0?Math.min(1,st.jumpT/0.85)*PI*2:0;
   for(let i=fx.length-1;i>=0;i--){const p=fx[i];p.life+=dt;const k=p.life/p.max;if(k>=1){scene.remove(p.m);fx.splice(i,1);continue;}
     p.v.multiplyScalar(1-2*dt);p.m.position.addScaledVector(p.v,dt);p.m.scale.setScalar(Math.max(0.01,p.s*(1-k)));}
   renderer.render(scene,camera);requestAnimationFrame(tick);
