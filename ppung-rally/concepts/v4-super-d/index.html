@@ -187,9 +187,12 @@ function build(){
   const billLo=put(head,mesh(new THREE.BoxGeometry(0.42,0.08,0.48),'#e8801a'),0,-0.2,0.56);
   parts.billLo=billLo;
   for(const s of [1,-1]){
-    put(head,mesh(new THREE.IcosahedronGeometry(0.16,1),'#ffffff'),s*0.25,0.12,0.44,0,0,0,1,1,0.55);
-    put(head,mesh(new THREE.BoxGeometry(0.09,0.09,0.06),'#1a1410'),s*0.22,0.1,0.53);
-    put(head,mesh(new THREE.BoxGeometry(0.3,0.07,0.08),'#1a1410'),s*0.25,0.3,0.48,0,0,s*-0.45);
+    // angry eyes: big whites facing forward, pupils pulled toward the bill, a lid squinting from above, brows in a sharp V
+    put(head,mesh(new THREE.IcosahedronGeometry(0.21,1),'#ffffff'),s*0.21,0.1,0.42,0,0,0,1,1,0.6);
+    put(head,mesh(new THREE.IcosahedronGeometry(0.1,1),'#1a1410'),s*0.15,0.06,0.53,0,0,0,1,1,0.5);
+    put(head,mesh(new THREE.BoxGeometry(0.03,0.03,0.02),'#ffffff'),s*0.12,0.1,0.58);
+    put(head,mesh(new THREE.BoxGeometry(0.46,0.14,0.2),paint.head),s*0.21,0.24,0.47,0,0,s*0.5);
+    put(head,mesh(new THREE.BoxGeometry(0.42,0.1,0.14),'#1a1410'),s*0.21,0.33,0.52,0,0,s*0.55);
   }
   for(const s of [1,-1]) put(head,mesh(new THREE.ConeGeometry(0.05,0.36,4),'#1a1410'),s*0.08,0.62,0.05,0.2,0,s*-0.35);
   // cockpit fairing at the back + wild-haired driver
